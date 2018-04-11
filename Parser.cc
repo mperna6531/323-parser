@@ -79,9 +79,50 @@ bool Parser::IDS_PRIME() {
 }
 
 // Rule 15:
-bool Parser::S(){
+bool Parser::S() {
 
 }
+
+// Rule 16:
+bool CMP() {
+
+}  
+
+// Rule 17:
+bool A() {
+
+}
+
+ // Rule 18:
+bool I() {
+
+}
+
+// Rule 18-2:
+bool I_PRIME() {
+
+} 
+
+// Rule 19:
+bool R() {
+
+}
+
+// Rule 19-2:
+bool R_PRIME(){
+
+}  
+
+// Rule 20:
+bool PR() {
+
+}
+
+// Rule 21:
+bool SC(){
+  
+}
+
 
 // Rule 22:
 bool Parser::W() {
@@ -99,7 +140,6 @@ bool Parser::W() {
       }
     }
   }
-
   return result;
 }
 
