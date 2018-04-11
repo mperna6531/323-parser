@@ -129,7 +129,7 @@ bool FSM::is_starting() const {
   return (currentState_ == START && previousState_ == START);
 }
 
-std::string FSM::getLexeme() const {
+const std::string FSM::getLexeme() const {
   return lexeme_;
 }
 

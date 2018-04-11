@@ -84,43 +84,56 @@ bool Parser::S() {
 }
 
 // Rule 16:
-bool CMP() {
+bool Parser::CMP() {
 
 }  
 
 // Rule 17:
-bool A() {
+bool Parser::A() {
 
 }
 
  // Rule 18:
-bool I() {
+bool Parser::I() {
 
 }
 
 // Rule 18-2:
-bool I_PRIME() {
+bool Parser::I_PRIME() {
 
 } 
 
 // Rule 19:
-bool R() {
+bool Parser::R() {
 
 }
 
 // Rule 19-2:
-bool R_PRIME(){
+bool Parser::R_PRIME() {
 
 }  
 
 // Rule 20:
-bool PR() {
+bool Parser::PR() {
 
 }
 
 // Rule 21:
-bool SC() {
-
+bool Parser::SC() {
+  if (it_->getLexeme().compare("get") == 0) {
+    next_token();
+    if (it_->getLexeme().compare("(") == 0) {
+      next_token();
+      if (IDS()) {
+        if (it_->getLexeme().compare(")")) {
+          next_token();
+          return true;
+        }
+      }
+    }
+  }
+  
+  return false;
 }
 
 

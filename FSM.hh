@@ -46,7 +46,7 @@ public:
   bool is_accepting() const;
   bool backup() const;
   void reset();
-  std::string getLexeme() const;
+  const std::string getLexeme() const;
   TOKENS::TYPE getTokenType() const;
 };
 
