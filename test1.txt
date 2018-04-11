@@ -1,0 +1,9 @@
+function add$[a:int,b:int]
+{
+  return a + b;
+}
+
+%%
+  int A, B123$; !Declarations!
+  get(A,B);
+  put(add$(A,B123$));
