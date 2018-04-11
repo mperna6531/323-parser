@@ -119,8 +119,8 @@ bool PR() {
 }
 
 // Rule 21:
-bool SC(){
-  
+bool SC() {
+
 }
 
 
