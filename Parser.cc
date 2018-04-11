@@ -78,11 +78,29 @@ bool Parser::IDS_PRIME() {
   return result;
 }
 
+// Rule 15:
+bool Parser::S(){
+
+}
+
 // Rule 22:
 bool Parser::W() {
+  bool result = false;
+
   if (it_->getLexeme().compare("while") == 0) {
-    
+    next_token();
+    if (it_->getLexeme().compare("(") == 0) {
+      next_token();
+      if (CND()) {
+        if (it_->getLexeme().compare(")") == 0){
+          next_token();
+          result = S();
+        }
+      }
+    }
   }
+
+  return result;
 }
 
 // Rule 23:

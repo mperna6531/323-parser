@@ -25,6 +25,7 @@ public:
   bool IDS();  // Rule 13
   bool IDS_PRIME();  // Rule 13-2
 
+  bool S();  // Rule 15
   bool W();  // Rule 22
   bool CND();  // Rule 23
   bool RLP();  // Rule 24
