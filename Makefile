@@ -1,8 +1,12 @@
 #
-all: main.cc scanner.hh scanner.cc token.hh token.cc FSM.hh FSM.cc Parser.cc Parser.hh
-	g++ -g -o rat main.cc scanner.cc token.cc FSM.cc Parser.cc
+
+all: main.cc scanner.hh scanner.cc FSM.hh FSM.cc Parser.hh Parser.cc ParseError.hh
+	g++ -o rat main.cc token.cc scanner.cc Parser.cc FSM.cc
+
+debug:	main.o token.o scanner.o parser.o fsm.o
+	g++ -g -o rat_debug rat main.cc token.cc scanner.cc Parser.cc FSM.cc
 
 clean:
-	rm rat 
+	rm -f rat rat_debug
 
 
