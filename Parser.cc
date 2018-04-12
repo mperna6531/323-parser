@@ -326,22 +326,22 @@ bool Parser::S() {
   if (lex.compare("{") == 0)
     return CMP();
 
-  if (it_->getTokenType().compare("Identifer") == 0)
+  if (it_->getTokenType().compare("Identifier") == 0)
     return A();
 
   if (lex.compare("if") == 0)
     return I();
 
-  if (lex.compare("return"))
+  if (lex.compare("return") == 0)
     return R();
 
-  if (lex.compare("put"))
+  if (lex.compare("put") == 0)
     return PR();
 
-  if (lex.compare("get"))
+  if (lex.compare("get") == 0)
     return SC();
 
-  if (lex.compare("while"))
+  if (lex.compare("while") == 0)
     return W();
 
   return false;
@@ -405,6 +405,7 @@ bool Parser::I() {
       next_token();
       if(CND()) {
         if (it_->getLexeme().compare(")") == 0) {
+          next_token();
           if (S()) {
             return I_PRIME();
           }

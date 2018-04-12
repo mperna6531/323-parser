@@ -15,12 +15,9 @@ private:
 
   // debugging mode
   static const bool TEST_PRINT = true;
+  
   void print_token();
-
   void next_token();
-public:
-  Parser(std::vector<Token> &tokens);
-  void parse();
 
   bool R18S();  // Rule 1
   bool OFD();  // Rule 2
@@ -61,6 +58,9 @@ public:
   bool PMY();   // Rule 28
   bool PMY_PRIME();  // Rule 28-2
   bool EMP();  // Rule 29:
+public:
+  Parser(std::vector<Token> &tokens);
+  void parse();
 };
 
 #endif
