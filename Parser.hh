@@ -25,6 +25,9 @@ public:
   bool IDS();  // Rule 13
   bool IDS_PRIME();  // Rule 13-2
 
+  bool SL();  // Rule 14
+  bool SL_PRIME();  // Rule 14-2
+
   bool S();  // Rule 15
   bool CMP();  // Rule 16
   bool A();  // Rule 17
@@ -34,6 +37,7 @@ public:
 
   bool R();  // Rule 19
   bool R_PRIME();  // Rule 19-2
+  
   bool PR();  // Rule 20
   bool SC();  // Rule 21
   bool W();  // Rule 22

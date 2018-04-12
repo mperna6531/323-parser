@@ -78,56 +78,99 @@ bool Parser::IDS_PRIME() {
   return result;
 }
 
+// Rule 14:
+bool Parser::SL() {
+  if (TEST_PRINT) {
+    std::cout << "<Statement List> :=  <Statement>  <SL Prime>" << std::endl;
+  }
+}
+
+// Rule 14-2:
+bool Parser::SL_PRIME() {
+  if (TEST_PRINT) {
+    std::cout << "<SL Prime> :=  <Statement List>  |  <Empty>" << std::endl;
+  }
+}
+
 // Rule 15:
 bool Parser::S() {
+  if (TEST_PRINT) {
+    std::cout << "<Statement> :=  <Compound>  |  <Assign>  |  <If>  |  <Return>  |  <Print>  |  <Scan>  |  <While>"  << std::endl;
+  }
 
 }
 
 // Rule 16:
 bool Parser::CMP() {
+  if (TEST_PRINT) {
+    std::cout << "<Compound> :=  {  <Statement List>  }" << std::endl;
+  }
 
 }  
 
 // Rule 17:
 bool Parser::A() {
+  if (TEST_PRINT) {
+    std::cout << "<Assign> :=  <identifier>  =  <Expression>" << std::endl;
+  }
 
 }
 
  // Rule 18:
 bool Parser::I() {
+  if (TEST_PRINT) {
+    std::cout << "<If> :=  if  (  <Condition>  )  <Statement>  <If Prime>" << std::endl;
+  }
 
 }
 
 // Rule 18-2:
 bool Parser::I_PRIME() {
-
+  if (TEST_PRINT) {
+    std::cout << "<If Prime> :=  endif  |  else  <Statement>  endif" << std::endl;
+  }
 } 
 
 // Rule 19:
 bool Parser::R() {
-
+  if (TEST_PRINT) {
+    std::cout << "<Return> :=  return  <Return Prime>" << std::endl;
+  }
 }
 
 // Rule 19-2:
 bool Parser::R_PRIME() {
+  if (TEST_PRINT) {
+    std::cout << "<Return_Prime> :=  ; |  <Expression>" << std::endl;
+  }
 
 }  
 
 // Rule 20:
 bool Parser::PR() {
+  if (TEST_PRINT) {
+    std::cout << "<Print> :=  put  (  <Expression>  )  ;" << std::endl;
+  }
 
 }
 
 // Rule 21:
 bool Parser::SC() {
+  if (TEST_PRINT) {
+    std::cout << "<Scan> := get ( <IDs> )  ;" << std::endl;
+  }
+
   if (it_->getLexeme().compare("get") == 0) {
     next_token();
     if (it_->getLexeme().compare("(") == 0) {
       next_token();
       if (IDS()) {
-        if (it_->getLexeme().compare(")")) {
+        if (it_->getLexeme().compare(")") == 0) {
           next_token();
-          return true;
+          if  (it_->getLexeme().compare(";") == 0) {
+            next_token();
+            return true;
+          }
         }
       }
     }
@@ -139,6 +182,10 @@ bool Parser::SC() {
 
 // Rule 22:
 bool Parser::W() {
+  if (TEST_PRINT) {
+    std::cout << "<While> :=  while ( <Condition> ) <Statement>" << std::endl;
+  }
+
   bool result = false;
 
   if (it_->getLexeme().compare("while") == 0) {
@@ -158,6 +205,10 @@ bool Parser::W() {
 
 // Rule 23:
 bool Parser::CND() {
+  if (TEST_PRINT) {
+    std::cout << "<Condition> :=  <Expression>  <Relop>  <Expression>" << std::endl;
+  }
+
   if (E())
     if (RLP())
       return E();
@@ -167,6 +218,10 @@ bool Parser::CND() {
 
 // Rule 24:
 bool Parser::RLP() {
+  if (TEST_PRINT) {
+    std::cout << "<Relop> :=  ==  | ^=  |  >  | < | =>  | =<" << std::endl;
+  }
+
   std::string lex(it_->getLexeme());
   bool result = (lex.compare("==") == 0 || lex.compare("^=") == 0 || lex.compare(">") == 0 ||
     lex.compare("<") == 0 || lex.compare("=>") == 0 || lex.compare("=<") == 0);  
@@ -180,7 +235,7 @@ bool Parser::RLP() {
 // Rule 25:
 bool Parser::E() {
   if (TEST_PRINT) {
-    std::cout << "<E> := + <T> <E Prime>" << std::endl;
+    std::cout << "<Expression> :=  +  <Term>  <Expression Prime>" << std::endl;
   }
   
   if (T()) {
@@ -192,7 +247,7 @@ bool Parser::E() {
 // Rule 25-2:
 bool Parser::E_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<E Prime> := + <T> <E> | - <T> <E> | <Empty> " << std::endl;
+    std::cout << "<Expression Prime> :=  +  <Term>  <Expression>  |  -  <Term>  <Expression>  |  <Empty> " << std::endl;
   }
 
   bool result = false;
@@ -212,7 +267,7 @@ bool Parser::E_PRIME() {
 // Rule 26:
 bool Parser::T() {
   if (TEST_PRINT) {
-    std::cout << "<T> := <FA> <T Prime>" << std::endl;
+    std::cout << "<Term> :=  <Factor>  <Term Prime>" << std::endl;
   }
 
   if(FA())
@@ -224,7 +279,7 @@ bool Parser::T() {
 // Rule 26-2:
 bool Parser::T_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<T Prime> := * <FA> <T Prime> | / <FA> <T Prime> | <Empty> " << std::endl;
+    std::cout << "<Term Prime> :=  *  <Factor>  <Term Prime>  |  /  <Factor>  <Term Prime>  |  <Empty> " << std::endl;
   }
 
   bool result = false;
@@ -288,7 +343,7 @@ bool Parser::PMY() {
 // Rule 28-2:
 bool Parser::PMY_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<Primary Prime> := <IDs>  | <EMPTY>" << std::endl;
+    std::cout << "<Primary Prime> :=  <IDs>  |  <EMPTY>" << std::endl;
   }
 
   bool result = false;
