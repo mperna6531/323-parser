@@ -22,6 +22,14 @@ public:
   bool keyword(); 
   bool F();   // Rule 4
   
+  bool Q();  // Rule 8
+  bool B();  // Rule 9
+  bool ODL();  // Rule 10
+
+  bool DL();  // Rule 11
+  bool DL_PRIME();  // Rule 11-2
+
+  bool D();  // Rule 12
   bool IDS();  // Rule 13
   bool IDS_PRIME();  // Rule 13-2
 

@@ -3,13 +3,24 @@
 
 
 void Parser::print_token() {
-  if ( it_ != tokens_.end())
+  if (it_ != tokens_.end())
     std::cout << '\n' << std::left << std::setw(20) << "Token: " + it_->getTokenType() << std::left << std::setw(20) << 
     "Lexeme: " + it_->getLexeme() << std::endl;
 }
 
 void Parser::next_token() {
-  ++it_;
+  try {
+    if(it_ != tokens_.end())
+      ++it_;
+    else
+      throw std::out_of_range("iterator it_ out of range...exiting");
+  } catch (std::out_of_range &e) {
+    std::cout << e.what() << std::endl;
+    exit(1);   
+  }
+
+  if (it_ != tokens_.end())
+    print_token();
 }
 
 Parser::Parser(std::vector<Token> &tokens) : tokens_(tokens), it_(tokens_.begin()) {}
@@ -18,7 +29,7 @@ void Parser::parse() {
   // print starting token
   print_token();
   while (it_ != tokens_.end()) {
-    if (CND()) {
+    if (S()) {
       std::cout << "End of successfull parse." << std::endl;
     } else {
       std::cout << "Parse error." << std::endl;
@@ -45,6 +56,49 @@ bool Parser::F() {
   }
   
   return result;
+}
+
+// Rule 8:
+bool Parser::Q() {
+  if (TEST_PRINT) {
+    std::cout << "<Qualifier> :=  int  |  bolean  |  real"  << std::endl;
+  }
+}
+
+// Rule 9:
+bool Parser::B() {
+  if (TEST_PRINT) {
+    std::cout << "<Body> :=  {  <Statement List>  }"  << std::endl;
+  }
+} 
+
+// Rule 10:
+bool Parser::ODL() {
+  if (TEST_PRINT) {
+    std::cout << "<Opt Declaration List> :=  <Declaration List>  |  <Empty>"  << std::endl;
+  }
+}
+
+// Rule 11
+bool Parser::DL() {
+  if (TEST_PRINT) {
+    std::cout << "<Delcaration List> :=  <Declaration>  ;  <DL Prime>"  << std::endl;
+  }
+}
+
+// Rule 11-2:
+bool Parser::DL_PRIME() {
+  if (TEST_PRINT) {
+    std::cout << "<DL Prime> :=  <Declaration List>  |  <Empty>"  << std::endl;
+  }
+}
+
+// Rule 12
+bool Parser::D() {
+  if (TEST_PRINT) {
+    std::cout << "<Delcaration> :=  <Qualifier>  <Identifier>"  << std::endl;
+  }
+
 }
 
 // Rule 13:
@@ -83,6 +137,11 @@ bool Parser::SL() {
   if (TEST_PRINT) {
     std::cout << "<Statement List> :=  <Statement>  <SL Prime>" << std::endl;
   }
+
+  if (S())
+    return SL_PRIME();
+
+  return false;
 }
 
 // Rule 14-2:
@@ -90,6 +149,8 @@ bool Parser::SL_PRIME() {
   if (TEST_PRINT) {
     std::cout << "<SL Prime> :=  <Statement List>  |  <Empty>" << std::endl;
   }
+
+  return (SL() || EMP());
 }
 
 // Rule 15:
@@ -97,6 +158,8 @@ bool Parser::S() {
   if (TEST_PRINT) {
     std::cout << "<Statement> :=  <Compound>  |  <Assign>  |  <If>  |  <Return>  |  <Print>  |  <Scan>  |  <While>"  << std::endl;
   }
+
+  return (CMP() || A() || I() || R() || PR() || SC()  || W());
 
 }
 
@@ -106,6 +169,17 @@ bool Parser::CMP() {
     std::cout << "<Compound> :=  {  <Statement List>  }" << std::endl;
   }
 
+  if (it_->getLexeme().compare("{") == 0) {
+    next_token();
+    if (SL()) {
+      if (it_->getLexeme().compare("}") == 0) {
+        next_token();
+        return true;
+      }
+    }
+  }
+
+  return false;
 }  
 
 // Rule 17:
@@ -114,6 +188,25 @@ bool Parser::A() {
     std::cout << "<Assign> :=  <identifier>  =  <Expression>" << std::endl;
   }
 
+  bool result = false;
+
+  if (it_->getTokenType().compare("Identifier") == 0) {
+    next_token();
+    if (it_->getLexeme().compare("=") == 0) {
+      next_token();
+      if (E()) {
+        if (it_->getLexeme().compare(";") == 0) {
+          next_token();
+          result = true;
+        }
+      }
+    } else {
+      --it_;
+      result = false;
+    }
+  }
+
+  return result;
 }
 
  // Rule 18:
@@ -122,6 +215,21 @@ bool Parser::I() {
     std::cout << "<If> :=  if  (  <Condition>  )  <Statement>  <If Prime>" << std::endl;
   }
 
+  if (it_->getLexeme().compare("if") == 0) {
+    next_token();
+    if (it_->getLexeme().compare("(") == 0) {
+      next_token();
+      if(CND()) {
+        if (it_->getLexeme().compare(")") == 0) {
+          if (S()) {
+            return I_PRIME();
+          }
+        }
+      }
+    }
+  }
+
+  return false;
 }
 
 // Rule 18-2:
@@ -129,6 +237,23 @@ bool Parser::I_PRIME() {
   if (TEST_PRINT) {
     std::cout << "<If Prime> :=  endif  |  else  <Statement>  endif" << std::endl;
   }
+
+  bool result = false;
+
+  if (it_->getLexeme().compare("endif") == 0) {
+    next_token();
+    result = true;
+  } else { // try else <Statement> endif
+    if (it_->getLexeme().compare("else") == 0) {
+      next_token();
+      if (S()) {
+        if (it_->getLexeme().compare("endif") == 0) {
+          result = true;
+        }
+      }
+    }
+  }
+  return result;
 } 
 
 // Rule 19:
@@ -136,6 +261,13 @@ bool Parser::R() {
   if (TEST_PRINT) {
     std::cout << "<Return> :=  return  <Return Prime>" << std::endl;
   }
+
+  if (it_->getLexeme().compare("return") == 0) {
+    next_token();
+    return R_PRIME();
+  } 
+
+  return false;
 }
 
 // Rule 19-2:
@@ -144,6 +276,21 @@ bool Parser::R_PRIME() {
     std::cout << "<Return_Prime> :=  ; |  <Expression>" << std::endl;
   }
 
+  bool result = false;
+
+  if (it_->getLexeme().compare(";") == 0) {
+    next_token();
+    result = true;
+  } else { // try <Expression> ;
+    if (E()) {
+      if (it_->getLexeme().compare(";") == 0) {
+        next_token();
+        result = true;
+      }
+    }
+  }
+
+  return result;
 }  
 
 // Rule 20:
@@ -152,6 +299,23 @@ bool Parser::PR() {
     std::cout << "<Print> :=  put  (  <Expression>  )  ;" << std::endl;
   }
 
+  if (it_->getLexeme().compare("put") == 0) {
+    next_token();
+    if (it_->getLexeme().compare("(")  == 0) {
+      next_token();
+      if (E()) {
+        if (it_->getLexeme().compare(")") == 0){
+          next_token();
+          if (it_->getLexeme().compare(";") == 0) {
+            next_token();
+            return true;
+          }
+        }
+      }
+    }
+  }
+
+  return false;
 }
 
 // Rule 21:
