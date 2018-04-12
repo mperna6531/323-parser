@@ -30,7 +30,7 @@ void Parser::parse() {
   print_token();
   while (it_ != tokens_.end()) {
     if (R18S()) {
-      std::cout << "End of successfull parse." << std::endl;
+      std::cout << "Successfull Parse of RAT18S Program." << std::endl;
     } else {
       std::cout << "Parse error." << std::endl;
     }
