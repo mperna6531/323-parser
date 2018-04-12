@@ -15,7 +15,7 @@ private:
 
   // debugging mode
   static const bool TEST_PRINT = true;
-  
+
   void print_token();
   void next_token();
 

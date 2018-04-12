@@ -623,6 +623,7 @@ bool Parser::T() {
   if(FA())
     return T_PRIME();
     
+  
   return false;
 }
 
@@ -634,9 +635,9 @@ bool Parser::T_PRIME() {
 
   bool result = false;
   
-  if(it_->getLexeme().compare("*") == 0 || it_->getLexeme().compare("/") == 0){
+  if (it_->getLexeme().compare("*") == 0 || it_->getLexeme().compare("/") == 0) {
     next_token();
-    if(FA()) {
+    if (FA()) {
       result = T_PRIME();  // *FAT
     } else {
       result = false;
@@ -668,21 +669,30 @@ bool Parser::PMY() {
 	}
 
   bool result = false;
+
   if(it_->getTokenType().compare("Integer") == 0 || it_->getTokenType().compare("Real") == 0 ||
     it_->getLexeme().compare("true") == 0 || it_->getLexeme().compare("false") == 0) {
-      //
       next_token();
       result = true;
   } else if (it_->getLexeme() == "(") {
     next_token();
     if(E()) { 
-      result = (it_->getLexeme() == ")");
-      if(result) { next_token(); }
-    } else {
-      result = false;
+      if(it_->getLexeme() == ")") {
+        next_token();
+        result = true;
+      }
     }
-  } else if (it_->getTokenType() == "Identifier") {
+  } else if (it_->getTokenType().compare("Identifier") == 0) {
       next_token();
+      if (it_->getLexeme().compare("(") == 0) {
+        next_token();
+        if (IDS()) {
+          if (it_->getLexeme().compare(")") == 0) {
+            next_token();
+            result = true;
+          }
+        }
+      }
       result = PMY_PRIME();
   }
 
