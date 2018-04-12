@@ -39,10 +39,10 @@ const int STATE_TABLE[16][14] =
     "else", "return", "put", "get", "while", "true", "false", "function" };
   bool is_key() const;
   std::string lexeme_;
+  bool is_in_comment() const;
 public:
   FSM();
   void transition(char input);
-  bool is_in_comment() const;
   bool is_accepting() const;
   bool backup() const;
   void reset();
