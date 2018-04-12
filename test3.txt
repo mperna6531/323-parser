@@ -1,1 +1,28 @@
-{ a = b; }
+! This file is for sample code which,determines salesTax between two amounts of money. This file is > 20 source lines !
+
+function salesTax$[principal:real,salesTax:real]
+{
+  return principal * salesTax;
+}
+
+function totalPrice[principal:real,salesTax:real]
+{
+  ! Can you call a function from this function? !
+  ! This function calls the above function, and adds the principal with the calculated salesTax from the above function!
+  return principal + salesTax(principal,salesTax);
+}
+
+! function totalTax$[] Want to see if it gets ignored inside a comment !
+
+%%
+  real principal$,maxPrincipal,salesTax; !REAL Declarations!
+  int step; !INT Declarations!
+
+  get(principal$,maxPrincipal,salesTax,step);
+  while(step < maxPrincipal)
+    {
+      put(principal,salesTax);
+      put(salesTax(principal,salesTax));
+      put(totalPrice(principal,salesTax));
+      step = step + 1;
+    }

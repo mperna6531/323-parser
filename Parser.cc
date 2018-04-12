@@ -60,8 +60,13 @@ bool Parser::OFD() {
   if (TEST_PRINT) {
     std::cout << "<Function>  :=  <Function Definitions>  |  <Empty>"  << std::endl;
   }
-  
-  return (FD() || EMP());
+
+  if (it_->getLexeme().compare("%%") == 0) 
+    return EMP();
+
+  return FD();
+
+    
 }
 
 // Rule 3:
@@ -69,9 +74,11 @@ bool Parser::FD() {
   if (TEST_PRINT) {
     std::cout << "<Function Definitions>  :=  <Function>  <FD Prime>"  << std::endl;
   }
-  
+
   if (F())
     return FD_PRIME();
+
+  return false;
 } 
 
 // Rule 3-2:
@@ -80,7 +87,10 @@ bool Parser::FD_PRIME() {
     std::cout << "<FD Prime>  :=  <Function Definitions>  |  <Empty>"  << std::endl;
   }
 
-  return (FD() || EMP());
+  if (it_->getLexeme().compare("function") == 0) 
+    return F();
+
+  return EMP();
 }
 
 
