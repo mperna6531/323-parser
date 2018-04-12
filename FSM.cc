@@ -125,10 +125,6 @@ bool FSM::is_in_comment() const {
   return (currentState_ == COMM_IN);
 }
 
-bool FSM::is_starting() const {
-  return (currentState_ == START && previousState_ == START);
-}
-
 const std::string FSM::getLexeme() const {
   return lexeme_;
 }

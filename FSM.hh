@@ -41,7 +41,6 @@ const int STATE_TABLE[16][14] =
   std::string lexeme_;
 public:
   FSM();
-  bool is_starting() const;
   void transition(char input);
   bool is_in_comment() const;
   bool is_accepting() const;
