@@ -234,15 +234,11 @@ bool Parser::DL_PRIME() {
 // Rule 12
 bool Parser::D() {
   if (TEST_PRINT) {
-    std::cout << "<Delcaration>  :=  <Qualifier>  <Identifier>"  << std::endl;
+    std::cout << "<Delcaration>  :=  <Qualifier>  <IDs>"  << std::endl;
   }
 
-  if (Q()) {
-    if (it_->getTokenType().compare("Identifier") == 0) {
-      next_token();
-      return true;
-    }
-  }
+  if (Q()) 
+    return IDS();
 
   return false;
 }
