@@ -29,7 +29,7 @@ void Parser::parse() {
   // print starting token
   print_token();
   while (it_ != tokens_.end()) {
-    if (S()) {
+    if (R18S()) {
       std::cout << "End of successfull parse." << std::endl;
     } else {
       std::cout << "Parse error." << std::endl;
@@ -45,6 +45,7 @@ bool Parser::R18S() {
 
   if (OFD()) {
     if (it_->getLexeme().compare("%%") == 0) {
+      next_token();
       if (ODL()) {
         return SL();
       }
@@ -125,12 +126,8 @@ bool Parser::PL() {
     std::cout << "<Parameter List>  :=  <Parameter>  <PL Prime>"  << std::endl;
   }
 
-  if (IDS()) {
-    if (it_->getLexeme().compare(":") == 0) {
-      next_token();
-      return Q();
-    }
-  }
+  if (P())
+    return PL_PRIME();
 
   return false;
 }
@@ -240,6 +237,14 @@ bool Parser::D() {
     std::cout << "<Delcaration>  :=  <Qualifier>  <Identifier>"  << std::endl;
   }
 
+  if (Q()) {
+    if (it_->getTokenType().compare("Identifier") == 0) {
+      next_token();
+      return true;
+    }
+  }
+
+  return false;
 }
 
 // Rule 13:
