@@ -1,7 +1,8 @@
-#include"token.hh"
-#include<set>
 #ifndef FSM_H_INCLUDED
 #define FSM_H_INCLUDED
+
+#include"token.hh"
+#include<set>
 
 class FSM {
 private:

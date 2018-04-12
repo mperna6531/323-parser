@@ -1,7 +1,6 @@
 #include <iomanip>
 #include "Parser.hh"
 
-
 void Parser::print_token() {
   if (it_ != tokens_.end())
     std::cout << '\n' << std::left << std::setw(20) << "Token: " + it_->getTokenType() << std::left << std::setw(20) << 
@@ -125,7 +124,10 @@ bool Parser::OPL() {
     std::cout << "<Opt Parameter List>  := <Parameter List>  |  <Empty>"  << std::endl;
   }
 
-  return (PL() || EMP());
+  if (it_->getTokenType().compare("Identifier") == 0)
+    return PL();
+
+  return EMP();
 } 
 
 // Rule 6:
@@ -210,8 +212,14 @@ bool Parser::ODL() {
   if (TEST_PRINT) {
     std::cout << "<Opt Declaration List>  :=  <Declaration List>  |  <Empty>"  << std::endl;
   }
+  
+  std::string lex(it_->getLexeme());
 
-  return (DL() || EMP());
+  if (lex.compare("int") == 0 || lex.compare("boolean") == 0 || lex.compare("real") == 0)
+    return DL();
+
+  return EMP();
+  
 }
 
 // Rule 11
@@ -236,7 +244,11 @@ bool Parser::DL_PRIME() {
     std::cout << "<DL Prime>  :=  <Declaration List>  |  <Empty>"  << std::endl;
   }
   
-  return (DL() || EMP());
+  std::string lex(it_->getLexeme());
+  if (lex.compare("int") == 0 || lex.compare("boolean") == 0 || lex.compare("real") == 0)
+    return DL();
+
+  return EMP();
 }
 
 // Rule 12
@@ -309,8 +321,30 @@ bool Parser::S() {
     std::cout << "<Statement>  :=  <Compound>  |  <Assign>  |  <If>  |  <Return>  |  <Print>  |  <Scan>  |  <While>"  << std::endl;
   }
 
-  return (CMP() || A() || I() || R() || PR() || SC()  || W());
+  std::string lex(it_->getLexeme());
 
+  if (lex.compare("{") == 0)
+    return CMP();
+
+  if (it_->getTokenType().compare("Identifer") == 0)
+    return A();
+
+  if (lex.compare("if") == 0)
+    return I();
+
+  if (lex.compare("return"))
+    return R();
+
+  if (lex.compare("put"))
+    return PR();
+
+  if (lex.compare("get"))
+    return SC();
+
+  if (lex.compare("while"))
+    return W();
+
+  return false;
 }
 
 // Rule 16:

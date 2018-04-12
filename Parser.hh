@@ -1,3 +1,6 @@
+#ifndef PARSER_HH_
+#define PARSER_HH_
+
 #include <iostream>
 #include <vector>
 
@@ -59,3 +62,5 @@ public:
   bool PMY_PRIME();  // Rule 28-2
   bool EMP();  // Rule 29:
 };
+
+#endif
