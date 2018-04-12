@@ -541,8 +541,6 @@ bool Parser::W() {
     std::cout << "<While>  :=  while ( <Condition> ) <Statement>" << std::endl;
   }
 
-  bool result = false;
-
   if (it_->getLexeme().compare("while") == 0) {
     next_token();
     if (it_->getLexeme().compare("(") == 0) {
@@ -550,12 +548,13 @@ bool Parser::W() {
       if (CND()) {
         if (it_->getLexeme().compare(")") == 0){
           next_token();
-          result = S();
+          return S();
         }
       }
     }
   }
-  return result;
+
+  return false;
 }
 
 // Rule 23:
@@ -578,6 +577,7 @@ bool Parser::RLP() {
   }
 
   std::string lex(it_->getLexeme());
+  
   bool result = (lex.compare("==") == 0 || lex.compare("^=") == 0 || lex.compare(">") == 0 ||
     lex.compare("<") == 0 || lex.compare("=>") == 0 || lex.compare("=<") == 0);  
 
@@ -629,7 +629,6 @@ bool Parser::T() {
   if(FA())
     return T_PRIME();
     
-  
   return false;
 }
 
@@ -676,14 +675,14 @@ bool Parser::PMY() {
 
   bool result = false;
 
-  if(it_->getTokenType().compare("Integer") == 0 || it_->getTokenType().compare("Real") == 0 ||
+  if (it_->getTokenType().compare("Integer") == 0 || it_->getTokenType().compare("Real") == 0 ||
     it_->getLexeme().compare("true") == 0 || it_->getLexeme().compare("false") == 0) {
-      next_token();
-      result = true;
+    next_token();
+    result = true;
   } else if (it_->getLexeme() == "(") {
     next_token();
-    if(E()) { 
-      if(it_->getLexeme() == ")") {
+    if (E()) { 
+      if (it_->getLexeme() == ")") {
         next_token();
         result = true;
       }
@@ -709,19 +708,26 @@ bool Parser::PMY() {
 // Rule 28-2:
 bool Parser::PMY_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<Primary Prime>  :=  <IDs>  |  <EMPTY>" << std::endl;
+    std::cout << "<Primary Prime>  :=  <Identifier>  (  <IDs>  )  |  <EMPTY>" << std::endl;
   }
 
   bool result = false;
-  if (it_->getLexeme().compare("(") == 0) {
+  if (it_->getTokenType().compare("Identifier") == 0) {
     next_token();
-    if (IDS()) {
-      result =  !(it_->getLexeme().compare(")"));
-      if (result) { next_token(); }
+    if (it_->getLexeme().compare("(") == 0) {
+      next_token();
+      if (IDS()) {
+        next_token();
+        if (it_->getLexeme().compare(")") == 0) {
+          next_token();
+          result = true;
+        }
+      }
     }
-  } else {
+  } else {  // else return empty
     result = EMP();
   }
+
   return result;
 }
 
