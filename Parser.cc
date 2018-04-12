@@ -268,12 +268,12 @@ bool Parser::IDS() {
     std::cout << "<IDs>  := id <IDs Prime>" << std::endl;
   }
   
-  bool result = false;
   if (it_->getTokenType().compare("Identifier") == 0) {
     next_token();
-    result = IDS_PRIME();
+    return IDS_PRIME();
   }
-  return result;
+
+  return false;
 }
 
 // Rule 13-2:
@@ -310,8 +310,15 @@ bool Parser::SL_PRIME() {
   if (TEST_PRINT) {
     std::cout << "<SL Prime>  :=  <Statement List>  |  <Empty>" << std::endl;
   }
+  bool result = false;
+  std::vector<Token>::iterator current = it_;
 
-  return (SL() || EMP());
+  result = SL();
+
+  if (!result && current == it_)
+    result = EMP();
+
+  return result;
 }
 
 // Rule 15:
