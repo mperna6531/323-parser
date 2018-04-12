@@ -1,5 +1,6 @@
-#ifndef TOKEN_H
-#define TOKEN_H
+#ifndef TOKEN_HH_
+#define TOKEN_HH_
+
 #include<string>
 
 namespace TOKENS {
