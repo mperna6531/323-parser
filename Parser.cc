@@ -17,7 +17,7 @@ void Parser::next_token() {
     std::cout << e.what() << std::endl;
     exit(1);   
   }
-  
+
     print_token();
 }
 
@@ -26,13 +26,13 @@ Parser::Parser(std::vector<Token> &tokens) : tokens_(tokens), it_(tokens_.begin(
 void Parser::parse() {
   // print starting token
   print_token();
-  while (it_ != tokens_.end()) {
+
     if (R18S()) {
       std::cout << "Successfull Parse of RAT18S Program." << std::endl;
     } else {
       std::cout << "Parse error." << std::endl;
     }
-  }
+    
 }
 
 // Rule 1:
