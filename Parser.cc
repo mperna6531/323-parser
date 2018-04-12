@@ -63,6 +63,15 @@ bool Parser::Q() {
   if (TEST_PRINT) {
     std::cout << "<Qualifier> :=  int  |  bolean  |  real"  << std::endl;
   }
+
+  std::string lex(it_->getLexeme());
+
+  if (lex.compare("int") == 0 || lex.compare("boolean") == 0 || lex.compare("real") == 0) {
+    next_token();
+    return true;
+  }
+
+  return false;
 }
 
 // Rule 9:
@@ -70,6 +79,18 @@ bool Parser::B() {
   if (TEST_PRINT) {
     std::cout << "<Body> :=  {  <Statement List>  }"  << std::endl;
   }
+
+  if (it_->getLexeme().compare("{") == 0) {
+    next_token();
+    if (SL()) {
+      if (it_->getLexeme().compare("}") == 0) {
+        next_token();
+        return true;
+      }
+    }
+  }
+
+  return false;
 } 
 
 // Rule 10:
@@ -77,6 +98,8 @@ bool Parser::ODL() {
   if (TEST_PRINT) {
     std::cout << "<Opt Declaration List> :=  <Declaration List>  |  <Empty>"  << std::endl;
   }
+
+  return (DL() || EMP());
 }
 
 // Rule 11
@@ -84,6 +107,15 @@ bool Parser::DL() {
   if (TEST_PRINT) {
     std::cout << "<Delcaration List> :=  <Declaration>  ;  <DL Prime>"  << std::endl;
   }
+
+  if (D()) {
+    if (it_->getLexeme().compare(";") == 0) {
+      next_token();
+      return DL_PRIME();
+    }
+  }
+
+  return false;
 }
 
 // Rule 11-2:
@@ -91,6 +123,8 @@ bool Parser::DL_PRIME() {
   if (TEST_PRINT) {
     std::cout << "<DL Prime> :=  <Declaration List>  |  <Empty>"  << std::endl;
   }
+  
+  return (DL() || EMP());
 }
 
 // Rule 12
