@@ -17,8 +17,7 @@ void Parser::next_token() {
     std::cout << e.what() << std::endl;
     exit(1);   
   }
-
-  if (it_ != tokens_.end())
+  
     print_token();
 }
 
