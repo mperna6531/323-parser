@@ -37,33 +37,72 @@ void Parser::parse() {
   }
 }
 
-// TODO: FINISH
-bool Parser::keyword() {
-  if (it_->getTokenType().compare("Keyword") == 0) {
-    if (it_->getLexeme().compare("function") == 0) {
-      return F();
+// Rule 1:
+bool Parser::R18S() {
+  if (TEST_PRINT) {
+    std::cout << "<Rat 18S>  :=  <Opt Function Definitions>  %%  <Opt Declaration List>  <Statement List>"  << std::endl;
+  }
+
+  if (OFD()) {
+    if (it_->getLexeme().compare("%%") == 0) {
+      if (ODL()) {
+        return SL();
+      }
     }
   }
+
   return false;
+}  
+
+// Rule 2:
+bool Parser::OFD() {
+  if (TEST_PRINT) {
+    std::cout << "<Function>  :=  <Function Definitions>  |  <Empty>"  << std::endl;
+  }
+  
+  return (FD() || EMP());
 }
 
-//TODO::FINISH
-// Rule 4 <Function> ::= function  <Identifier>  [ <Opt Parameter List> ]  <Opt Declaration List>  <Body>
+// Rule 3:
+bool Parser::FD() {
+  if (TEST_PRINT) {
+    std::cout << "<Function Definitions>  :=  <Function>  <FD Prime>"  << std::endl;
+  }
+  
+  if (F())
+    return FD_PRIME();
+} 
+
+// Rule 3-2:
+bool Parser::FD_PRIME() {
+  if (TEST_PRINT) {
+    std::cout << "<FD Prime>  :=  <Function Definitions>  |  <Empty>"  << std::endl;
+  }
+
+  return (FD() || EMP());
+}
+
+
+// Rule 4:
 bool Parser::F() {
+  if (TEST_PRINT) {
+    std::cout << "<Function>  :=  function  <Identifier>  [ <Opt Parameter List> ]  <Opt Declaration List>  <Body>"  << std::endl;
+  }
+
   if (it_->getLexeme().compare("function") == 0) {
     next_token();
     if (it_->getTokenType().compare("Identifier") == 0) {
       next_token();
       if (it_->getLexeme().compare("[") == 0) {
         next_token();
-          if(OPL()) {
-            if (it_->getLexeme().compare("]") == 0) {
-              next_token();
-              if (ODL()) {
-                return B();
-              }
+        if(OPL()) {
+          if (it_->getLexeme().compare("]") == 0) {
+            next_token();
+            if (ODL()) {
+              return B();
             }
           }
+        }
       }
     }
   }

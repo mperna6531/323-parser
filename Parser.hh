@@ -18,8 +18,11 @@ private:
 public:
   Parser(std::vector<Token> &tokens);
   void parse();
-  bool keyword(); 
 
+  bool R18S();  // Rule 1
+  bool OFD();  // Rule 2
+  bool FD();  // Rule 3
+  bool FD_PRIME();  // Rule 3-2
   bool F();   // Rule 4
   bool OPL();  // Rule 5
 
