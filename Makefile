@@ -1,13 +1,15 @@
 #
 	CXX=g++
-	CXXFLAGS=-std=c++11 -Wall -pedantic
-	PROG=rat
+	CXXFLAGS=-std=c++1y -Wall -pedantic
+	PROG=-o rat
+	SOURCES=main.cc scanner.cc FSM.cc Parser.cc token.cc
+	HEADERS=scanner.hh FSM.hh Parser.hh token.hh ParseError.hh
 
-all: main.cc scanner.hh scanner.cc FSM.hh FSM.cc Parser.hh Parser.cc ParseError.hh
-	$(CXX) -std=c++1y  -g -Wall -pedantic -o $(PROG) main.cc token.cc scanner.cc Parser.cc FSM.cc
+all: $(SOURCES) $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(PROG) $(SOURCES)
 
-debug:	main.cc scanner.hh scanner.cc FSM.hh FSM.cc Parser.hh Parser.cc ParseError.hh
-	$(CXX) -g -o rat_debug main.cc token.cc scanner.cc Parser.cc FSM.cc
+debug: $(SOURCES) $(HEADERS)
+	$(CXX) $(CXXFLAGS) -g -o rat_debug $(SOURCES)
 
 clean:
 	rm -f rat rat_debug
