@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
   if (inputFile.is_open() && outputFile.is_open()) {
     Scanner scan;
     std::string expression;
-    int line_num = 0;
+    unsigned line_num = 0;
 
     while (getline(inputFile, expression)) 
       scan.lexer(expression, ++line_num);
