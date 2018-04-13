@@ -391,7 +391,6 @@ bool Parser::A() {
         }
       }
     } else {
-      --it_;
       result = false;
     }
   }
