@@ -34,7 +34,7 @@ const int STATE_TABLE[16][14] =
   STATE currentState_;
   STATE previousState_;
   INPUT getInputType(char input) const;
-  const std::set<std::string> keywords_ = { "int", "boolean", "real", "if", "endif",
+  const std::set<std::string> KEYWORDS = { "int", "boolean", "real", "if", "endif",
     "else", "return", "put", "get", "while", "true", "false", "function" };
 
   bool is_key() const;

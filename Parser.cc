@@ -737,7 +737,7 @@ bool Parser::PMY_PRIME() {
 // Rule 29:
 bool Parser::EMP() {
   if (TEST_PRINT) {
-    std:: cout << "<EMPTY>" << std::endl;
+    std:: cout << "<Empty>" << std::endl;
   }
 
   return true;

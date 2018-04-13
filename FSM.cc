@@ -4,7 +4,6 @@
 
 FSM::FSM() : currentState_(FSM::START), previousState_(FSM::START), lexeme_("")  {}
 
-
 FSM::INPUT FSM::getInputType(char input) const {
   if (isdigit(input)) return DIGIT;
   if (isalpha(input)) return LETTER;
@@ -46,8 +45,8 @@ FSM::INPUT FSM::getInputType(char input) const {
 }
 
 bool FSM::is_key() const {
-  std::set<std::string>::iterator it = keywords_.find(lexeme_.c_str());
-  if (it != keywords_.end())
+  std::set<std::string>::iterator it = KEYWORDS.find(lexeme_.c_str());
+  if (it != KEYWORDS.end())
     return true;
   return false;
 }
