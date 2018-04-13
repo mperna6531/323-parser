@@ -324,12 +324,11 @@ bool Parser::SL_PRIME() {
   if (TEST_PRINT) {
     std::cout << "<SL Prime>  :=  <Statement List>  |  <Empty>" << std::endl;
   }
-  bool result = SL();
+  
+  if (compare_lexeme("{") || compare_token_type("Identifier") || compare_token_type("Keyword"))
+    return SL();
 
-  if (!result)
-    result = EMP();
-
-  return result;
+  return EMP();
 }
 
 // Rule 15:
@@ -500,7 +499,7 @@ bool Parser::PR() {
 
   if (compare_lexeme("put")) {
     next_token();
-    if (compare_lexeme("(")  == 0) {
+    if (compare_lexeme("(")) {
       next_token();
       if (E()) {
         if (compare_lexeme(")")){

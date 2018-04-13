@@ -20,7 +20,6 @@ private:
   void next_token();
   bool compare_token_type(const std::string &tkn) const;
   bool compare_lexeme(const std::string &lex) const;
-  
 
   bool R18S();  // Rule 1
   bool OFD();  // Rule 2
