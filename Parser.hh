@@ -16,8 +16,11 @@ private:
   // debugging mode
   static const bool TEST_PRINT = true;
 
-  void print_token();
+  void print_token() const;
   void next_token();
+  bool compare_token_type(const std::string &tkn) const;
+  bool compare_lexeme(const std::string &lex) const;
+  
 
   bool R18S();  // Rule 1
   bool OFD();  // Rule 2

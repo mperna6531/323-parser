@@ -37,6 +37,7 @@ const int STATE_TABLE[16][14] =
   INPUT getInputType(char input) const;
   const std::set<std::string> keywords_ = { "int", "boolean", "real", "if", "endif",
     "else", "return", "put", "get", "while", "true", "false", "function" };
+
   bool is_key() const;
   std::string lexeme_;
   bool is_in_comment() const;

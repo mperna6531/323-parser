@@ -1,9 +1,24 @@
 #include <iomanip>
+#include <stdexcept>
 #include "Parser.hh"
 
-void Parser::print_token() {
+bool Parser::compare_token_type(const std::string &tkn) const {
   if (it_ != tokens_.end())
-    std::cout << '\n' << std::left << std::setw(20) << "Token: " + it_->getTokenType() << std::left << std::setw(20) << 
+    return (it_->getTokenType().compare(tkn) == 0);
+    
+  return false;
+}
+
+bool Parser::compare_lexeme(const std::string &lex) const {
+  if (it_ != tokens_.end())
+    return (it_->getLexeme().compare(lex) == 0);
+    
+  return false;
+}
+
+void Parser::print_token() const {
+  if (it_ != tokens_.end())
+    std::cout << '\n' << std::left << std::setw(20) << "Token: " + it_-> getTokenType() << std::left << std::setw(20) << 
     "Lexeme: " + it_->getLexeme() << std::endl;
 }
 
@@ -43,7 +58,7 @@ bool Parser::R18S() {
   }
 
   if (OFD()) {
-    if (it_->getLexeme().compare("%%") == 0) {
+    if (compare_lexeme("%%")) {
       next_token();
       if (ODL()) {
         return SL();
@@ -60,7 +75,7 @@ bool Parser::OFD() {
     std::cout << "<Function>  :=  <Function Definitions>  |  <Empty>"  << std::endl;
   }
 
-  if (it_->getLexeme().compare("%%") == 0) 
+  if (compare_lexeme("%%")) 
     return EMP();
 
   return FD();
@@ -84,7 +99,7 @@ bool Parser::FD_PRIME() {
     std::cout << "<FD Prime>  :=  <Function Definitions>  |  <Empty>"  << std::endl;
   }
 
-  if (it_->getLexeme().compare("function") == 0) 
+  if (compare_lexeme("function")) 
     return F();
 
   return EMP();
@@ -97,14 +112,14 @@ bool Parser::F() {
     std::cout << "<Function>  :=  function  <Identifier>  [ <Opt Parameter List> ]  <Opt Declaration List>  <Body>"  << std::endl;
   }
 
-  if (it_->getLexeme().compare("function") == 0) {
+  if (compare_lexeme("function")) {
     next_token();
-    if (it_->getTokenType().compare("Identifier") == 0) {
+    if (compare_token_type("Identifier")) {
       next_token();
-      if (it_->getLexeme().compare("[") == 0) {
+      if (compare_lexeme("[")) {
         next_token();
         if(OPL()) {
-          if (it_->getLexeme().compare("]") == 0) {
+          if (compare_lexeme("]")) {
             next_token();
             if (ODL()) {
               return B();
@@ -124,7 +139,7 @@ bool Parser::OPL() {
     std::cout << "<Opt Parameter List>  := <Parameter List>  |  <Empty>"  << std::endl;
   }
 
-  if (it_->getTokenType().compare("Identifier") == 0)
+  if (compare_token_type("Identifier"))
     return PL();
 
   return EMP();
@@ -148,7 +163,7 @@ bool Parser::PL_PRIME() {
     std::cout << "<PL Prime>  :=  ,  <Parameter List>  |  <Empty>"  << std::endl;
   }
 
-  if (it_->getLexeme().compare(",") == 0) {
+  if (compare_lexeme(",")) {
     next_token();
     return PL();
   }
@@ -163,7 +178,7 @@ bool Parser::P() {
   }
 
   if (IDS()) {
-    if (it_->getLexeme().compare(":") == 0) {
+    if (compare_lexeme(":")) {
       next_token();
       return Q();
     }
@@ -178,9 +193,9 @@ bool Parser::Q() {
     std::cout << "<Qualifier>  :=  int  |  bolean  |  real"  << std::endl;
   }
 
-  std::string lex(it_->getLexeme());
+  
 
-  if (lex.compare("int") == 0 || lex.compare("boolean") == 0 || lex.compare("real") == 0) {
+  if (compare_lexeme("int") || compare_lexeme("boolean") || compare_lexeme("real")) {
     next_token();
     return true;
   }
@@ -194,10 +209,10 @@ bool Parser::B() {
     std::cout << "<Body>  :=  {  <Statement List>  }"  << std::endl;
   }
 
-  if (it_->getLexeme().compare("{") == 0) {
+  if (compare_lexeme("{")) {
     next_token();
     if (SL()) {
-      if (it_->getLexeme().compare("}") == 0) {
+      if (compare_lexeme("}")) {
         next_token();
         return true;
       }
@@ -213,9 +228,8 @@ bool Parser::ODL() {
     std::cout << "<Opt Declaration List>  :=  <Declaration List>  |  <Empty>"  << std::endl;
   }
   
-  std::string lex(it_->getLexeme());
 
-  if (lex.compare("int") == 0 || lex.compare("boolean") == 0 || lex.compare("real") == 0)
+  if (compare_lexeme("int") || compare_lexeme("boolean") || compare_lexeme("real"))
     return DL();
 
   return EMP();
@@ -229,7 +243,7 @@ bool Parser::DL() {
   }
 
   if (D()) {
-    if (it_->getLexeme().compare(";") == 0) {
+    if (compare_lexeme(";")) {
       next_token();
       return DL_PRIME();
     }
@@ -244,8 +258,7 @@ bool Parser::DL_PRIME() {
     std::cout << "<DL Prime>  :=  <Declaration List>  |  <Empty>"  << std::endl;
   }
   
-  std::string lex(it_->getLexeme());
-  if (lex.compare("int") == 0 || lex.compare("boolean") == 0 || lex.compare("real") == 0)
+  if (compare_lexeme("int") || compare_lexeme("boolean") || compare_lexeme("real"))
     return DL();
 
   return EMP();
@@ -269,7 +282,7 @@ bool Parser::IDS() {
     std::cout << "<IDs>  := id <IDs Prime>" << std::endl;
   }
   
-  if (it_->getTokenType().compare("Identifier") == 0) {
+  if (compare_token_type("Identifier")) {
     next_token();
     return IDS_PRIME();
   }
@@ -285,7 +298,7 @@ bool Parser::IDS_PRIME() {
   
   bool result = false;
 
-  if (it_->getLexeme().compare(",") == 0) {
+  if (compare_lexeme(",")) {
     next_token();
     result = IDS(); 
   } else { // empty
@@ -311,12 +324,9 @@ bool Parser::SL_PRIME() {
   if (TEST_PRINT) {
     std::cout << "<SL Prime>  :=  <Statement List>  |  <Empty>" << std::endl;
   }
-  bool result = false;
-  std::vector<Token>::iterator current = it_;
+  bool result = SL();
 
-  result = SL();
-
-  if (!result && current == it_)
+  if (!result)
     result = EMP();
 
   return result;
@@ -327,31 +337,33 @@ bool Parser::S() {
   if (TEST_PRINT) {
     std::cout << "<Statement>  :=  <Compound>  |  <Assign>  |  <If>  |  <Return>  |  <Print>  |  <Scan>  |  <While>"  << std::endl;
   }
-
-  std::string lex(it_->getLexeme());
-
-  if (lex.compare("{") == 0)
-    return CMP();
-
-  if (it_->getTokenType().compare("Identifier") == 0)
+  
+/*
+  std::string lex = it_->getLexeme();
+  
+  if (compare_token_type("Identifier"))
     return A();
 
-  if (lex.compare("if") == 0)
+  if (compare_lexeme("{"))
+    return CMP();
+
+  if (compare_lexeme("if"))
     return I();
 
-  if (lex.compare("return") == 0)
+  if (compare_lexeme("return"))
     return R();
 
-  if (lex.compare("put") == 0)
+  if (compare_lexeme("put"))
     return PR();
 
-  if (lex.compare("get") == 0)
+  if (compare_lexeme("get"))
     return SC();
 
-  if (lex.compare("while") == 0)
+  if (compare_lexeme("while"))
     return W();
+*/
 
-  return false;
+  return (CMP() || A() || I() || R() || PR() || SC() || W());
 }
 
 // Rule 16:
@@ -360,10 +372,10 @@ bool Parser::CMP() {
     std::cout << "<Compound>  :=  {  <Statement List>  }" << std::endl;
   }
 
-  if (it_->getLexeme().compare("{") == 0) {
+  if (compare_lexeme("{")) {
     next_token();
     if (SL()) {
-      if (it_->getLexeme().compare("}") == 0) {
+      if (compare_lexeme("}")) {
         next_token();
         return true;
       }
@@ -381,12 +393,12 @@ bool Parser::A() {
 
   bool result = false;
 
-  if (it_->getTokenType().compare("Identifier") == 0) {
+  if (compare_token_type("Identifier")) {
     next_token();
-    if (it_->getLexeme().compare("=") == 0) {
+    if (compare_lexeme("=")) {
       next_token();
       if (E()) {
-        if (it_->getLexeme().compare(";") == 0) {
+        if (compare_lexeme(";")) {
           next_token();
           result = true;
         }
@@ -405,12 +417,12 @@ bool Parser::I() {
     std::cout << "<If>  :=  if  (  <Condition>  )  <Statement>  <If Prime>" << std::endl;
   }
 
-  if (it_->getLexeme().compare("if") == 0) {
+  if (compare_lexeme("if")) {
     next_token();
-    if (it_->getLexeme().compare("(") == 0) {
+    if (compare_lexeme("(")) {
       next_token();
       if(CND()) {
-        if (it_->getLexeme().compare(")") == 0) {
+        if (compare_lexeme(")")) {
           next_token();
           if (S()) {
             return I_PRIME();
@@ -431,14 +443,14 @@ bool Parser::I_PRIME() {
 
   bool result = false;
 
-  if (it_->getLexeme().compare("endif") == 0) {
+  if (compare_lexeme("endif")) {
     next_token();
     result = true;
   } else { // try else <Statement> endif
-    if (it_->getLexeme().compare("else") == 0) {
+    if (compare_lexeme("else")) {
       next_token();
       if (S()) {
-        if (it_->getLexeme().compare("endif") == 0) {
+        if (compare_lexeme("endif")) {
           result = true;
         }
       }
@@ -453,7 +465,7 @@ bool Parser::R() {
     std::cout << "<Return> :=  return  <Return Prime>" << std::endl;
   }
 
-  if (it_->getLexeme().compare("return") == 0) {
+  if (compare_lexeme("return")) {
     next_token();
     return R_PRIME();
   } 
@@ -469,12 +481,12 @@ bool Parser::R_PRIME() {
 
   bool result = false;
 
-  if (it_->getLexeme().compare(";") == 0) {
+  if (compare_lexeme(";")) {
     next_token();
     result = true;
   } else { // try <Expression> ;
     if (E()) {
-      if (it_->getLexeme().compare(";") == 0) {
+      if (compare_lexeme(";")) {
         next_token();
         result = true;
       }
@@ -490,14 +502,14 @@ bool Parser::PR() {
     std::cout << "<Print>  :=  put  (  <Expression>  )  ;" << std::endl;
   }
 
-  if (it_->getLexeme().compare("put") == 0) {
+  if (compare_lexeme("put")) {
     next_token();
-    if (it_->getLexeme().compare("(")  == 0) {
+    if (compare_lexeme("(")  == 0) {
       next_token();
       if (E()) {
-        if (it_->getLexeme().compare(")") == 0){
+        if (compare_lexeme(")")){
           next_token();
-          if (it_->getLexeme().compare(";") == 0) {
+          if (compare_lexeme(";")) {
             next_token();
             return true;
           }
@@ -515,14 +527,14 @@ bool Parser::SC() {
     std::cout << "<Scan>  := get  (  <IDs>  )  ;" << std::endl;
   }
 
-  if (it_->getLexeme().compare("get") == 0) {
+  if (compare_lexeme("get")) {
     next_token();
-    if (it_->getLexeme().compare("(") == 0) {
+    if (compare_lexeme("(")) {
       next_token();
       if (IDS()) {
-        if (it_->getLexeme().compare(")") == 0) {
+        if (compare_lexeme(")")) {
           next_token();
-          if  (it_->getLexeme().compare(";") == 0) {
+          if  (compare_lexeme(";")) {
             next_token();
             return true;
           }
@@ -541,12 +553,12 @@ bool Parser::W() {
     std::cout << "<While>  :=  while ( <Condition> ) <Statement>" << std::endl;
   }
 
-  if (it_->getLexeme().compare("while") == 0) {
+  if (compare_lexeme("while")) {
     next_token();
-    if (it_->getLexeme().compare("(") == 0) {
+    if (compare_lexeme("(")) {
       next_token();
       if (CND()) {
-        if (it_->getLexeme().compare(")") == 0){
+        if (compare_lexeme(")")){
           next_token();
           return S();
         }
@@ -576,10 +588,8 @@ bool Parser::RLP() {
     std::cout << "<Relop> :=  ==  | ^=  |  >  | < | =>  | =<" << std::endl;
   }
 
-  std::string lex(it_->getLexeme());
-  
-  bool result = (lex.compare("==") == 0 || lex.compare("^=") == 0 || lex.compare(">") == 0 ||
-    lex.compare("<") == 0 || lex.compare("=>") == 0 || lex.compare("=<") == 0);  
+  bool result = (compare_lexeme("==") || compare_lexeme("^=") || compare_lexeme(">") ||
+    compare_lexeme("<") || compare_lexeme("=>") || compare_lexeme("=<"));  
 
   if (result)
     next_token();
@@ -607,7 +617,7 @@ bool Parser::E_PRIME() {
   }
 
   bool result = false;
-  if (it_->getLexeme().compare("+") == 0 || it_->getLexeme().compare("-") == 0) {
+  if (compare_lexeme("+") || compare_lexeme("-")) {
     next_token();
     if(T()) {
       result = E_PRIME();
@@ -640,7 +650,7 @@ bool Parser::T_PRIME() {
 
   bool result = false;
   
-  if (it_->getLexeme().compare("*") == 0 || it_->getLexeme().compare("/") == 0) {
+  if (compare_lexeme("*") || compare_lexeme("/")) {
     next_token();
     if (FA()) {
       result = T_PRIME();  // *FAT
@@ -660,7 +670,7 @@ bool Parser::FA() {
     std::cout << "<Factor>  :=  -  <Primary>  |  <Primary>" << std::endl;
   }
   
-  if (it_->getLexeme().compare("-") == 0) {
+  if (compare_lexeme("-")) {
     next_token();
   }
 
@@ -675,8 +685,8 @@ bool Parser::PMY() {
 
   bool result = false;
 
-  if (it_->getTokenType().compare("Integer") == 0 || it_->getTokenType().compare("Real") == 0 ||
-    it_->getLexeme().compare("true") == 0 || it_->getLexeme().compare("false") == 0) {
+  if (compare_token_type("Integer") || compare_token_type("Real") ||
+    compare_lexeme("true") || compare_lexeme("false")) {
     next_token();
     result = true;
   } else if (it_->getLexeme() == "(") {
@@ -687,12 +697,12 @@ bool Parser::PMY() {
         result = true;
       }
     }
-  } else if (it_->getTokenType().compare("Identifier") == 0) {
+  } else if (compare_token_type("Identifier")) {
       next_token();
-      if (it_->getLexeme().compare("(") == 0) {
+      if (compare_lexeme("(")) {
         next_token();
         if (IDS()) {
-          if (it_->getLexeme().compare(")") == 0) {
+          if (compare_lexeme(")")) {
             next_token();
             result = true;
           }
@@ -712,13 +722,13 @@ bool Parser::PMY_PRIME() {
   }
 
   bool result = false;
-  if (it_->getTokenType().compare("Identifier") == 0) {
+  if (compare_token_type("Identifier")) {
     next_token();
-    if (it_->getLexeme().compare("(") == 0) {
+    if (compare_lexeme("(")) {
       next_token();
       if (IDS()) {
         next_token();
-        if (it_->getLexeme().compare(")") == 0) {
+        if (compare_lexeme("))")) {
           next_token();
           result = true;
         }

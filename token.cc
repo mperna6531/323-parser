@@ -6,7 +6,6 @@
 
 Token::Token(TOKENS::TYPE tt, std::string lexeme, int line_num) : tt_(tt), lexeme_(lexeme), line_num_(line_num) {}
 
-
 const std::string Token::getTokenType() const {
 
   switch (tt_) {
