@@ -338,9 +338,6 @@ bool Parser::S() {
     std::cout << "<Statement>  :=  <Compound>  |  <Assign>  |  <If>  |  <Return>  |  <Print>  |  <Scan>  |  <While>"  << std::endl;
   }
   
-/*
-  std::string lex = it_->getLexeme();
-  
   if (compare_token_type("Identifier"))
     return A();
 
@@ -361,9 +358,8 @@ bool Parser::S() {
 
   if (compare_lexeme("while"))
     return W();
-*/
 
-  return (CMP() || A() || I() || R() || PR() || SC() || W());
+  return false;
 }
 
 // Rule 16:
@@ -744,6 +740,7 @@ bool Parser::PMY_PRIME() {
 // Rule 29:
 bool Parser::EMP() {
   if (TEST_PRINT) {
+    std:: cout << "<EMPTY>" << std::endl;
   }
 
   return true;
