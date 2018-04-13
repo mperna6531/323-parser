@@ -1,5 +1,3 @@
-//Main File to read file:
-
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -53,8 +51,8 @@ int main(int argc, char **argv) {
     inputFile.close();
     outputFile.close();
   } else {
-      std::cout << "No Input File Found\n";
-      exit(1);
+    std::cout << "No Input File Found\n";
+    exit(1);
   }
   return 0;
 }

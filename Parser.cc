@@ -139,10 +139,10 @@ bool Parser::OPL() {
     std::cout << "<Opt Parameter List>  := <Parameter List>  |  <Empty>"  << std::endl;
   }
 
-  if (compare_token_type("Identifier"))
-    return PL();
+  if (compare_lexeme("]"))
+    return EMP();
 
-  return EMP();
+  return PL();
 } 
 
 // Rule 6:
@@ -326,7 +326,10 @@ bool Parser::SL_PRIME() {
   if (compare_lexeme("{") || compare_token_type("Identifier") || compare_token_type("Keyword"))
     return SL();
 
-  return EMP();
+  if (it_ == tokens_.end() || compare_lexeme("}"))
+    return EMP();
+
+  return false;
 }
 
 // Rule 15:
