@@ -375,7 +375,7 @@ bool Parser::CMP() {
 // Rule 17:
 bool Parser::A() {
   if (TEST_PRINT) {
-    std::cout << "<Assign>  :=  <identifier>  =  <Expression>" << std::endl;
+    std::cout << "<Assign>  :=  <identifier>  =  <Expression>  ;" << std::endl;
   }
 
   bool result = false;
