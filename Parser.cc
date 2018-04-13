@@ -13,7 +13,7 @@ void Parser::next_token() {
       ++it_;
     else
       throw std::out_of_range("iterator it_ out of range...exiting");
-  } catch (std::out_of_range &e) {
+  } catch (const std::out_of_range &e) {
     std::cout << e.what() << std::endl;
     exit(1);   
   }
@@ -669,7 +669,7 @@ bool Parser::FA() {
 // Rule 28:
 bool Parser::PMY() {
   if (TEST_PRINT) {
-		std::cout << "<Primary>  ::=  <Integer>  |   <Identifier>  ( <IDs> )   |   ( <Expression> )   |  <Real>  |   true   |  false " << std::endl;
+		std::cout << "<Primary>  ::=  <Integer>  |   <Identifier>  <Primary Prime>  |   ( <Expression> )   |  <Real>  |   true   |  false " << std::endl;
 	}
 
   bool result = false;
@@ -707,7 +707,7 @@ bool Parser::PMY() {
 // Rule 28-2:
 bool Parser::PMY_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<Primary Prime>  :=  <Identifier>  (  <IDs>  )  |  <EMPTY>" << std::endl;
+    std::cout << "<Primary Prime>  :=  <IDs>  |  <EMPTY>" << std::endl;
   }
 
   bool result = false;
