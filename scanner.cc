@@ -1,8 +1,7 @@
-// Contains Scanner Class
-// This class parses through the text file and creates token objects.
+#include <iostream>
 #include "scanner.hh"
 #include "token.hh"
-#include <iostream>
+
 
 Scanner::Scanner() {}
 

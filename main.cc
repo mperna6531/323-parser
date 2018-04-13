@@ -18,8 +18,8 @@ int main(int argc, char **argv) {
   std::cout << "Input Name of Output File: ";
   std::getline(std::cin, fileOutputName);
 
-  std::ifstream inputFile(fileInputName.c_str());
-  std::ofstream outputFile(fileOutputName.c_str());
+  std::ifstream inputFile(fileInputName);
+  std::ofstream outputFile(fileOutputName);
 
   if (inputFile.is_open() && outputFile.is_open()) {
     Scanner scan;
@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
     std::cout << std::left << std::setw(20) << "Token" << std::left << std::setw(20) << "Lexeme" << std::endl << std::endl;
     outputFile << std::left << std::setw(20)<< "Token" << std::left << std::setw(20) << "Lexeme" << std::endl << std::endl;
 
-    // 
+    
     for (auto el : scan.getTokens()) {
       std::cout << std::left << std::setw(20) << el.getTokenType() <<
         std::left << std::setw(20) << el.getLexeme() << std::endl;

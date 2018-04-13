@@ -12,8 +12,7 @@ private:
     ID_DS, INT_ACC, REAL_IN, REAL_ACC, UNKNOWN };
 
 // DFSM for RAT18s
-// all accepting states including unknown routed to START with ensuing input
-//
+// all accepting states including UNKNOWN routed to START with ensuing input
 const int STATE_TABLE[16][14] =
  {{ CURRENT_STATE,OP_1,  EQUAL,  CARROT,    LT_GT,   COMMENT,  SEPARATOR, PERCENT,  LETTER, DIGIT, DOLLAR_SIGN,DECIMAL_PT,OTHER,   BACKUP},
   { START,        OP_1A, EQ_A,   CAR_CHECK, OP_1A,   COMM_IN,  SEP_ACC,   PER_CHECK,ID_L,   INT_ACC,UNKNOWN,   UNKNOWN,   UNKNOWN, 0     },

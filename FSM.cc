@@ -88,9 +88,11 @@ bool FSM::backup() const {
     } else { // currentState == UNKNOWN && previousState_ != START
       return STATE_TABLE[currentState_][BACKUP];
     }
-  } else { // currentState == START
+  } else if (currentState_ == START) { // currentState == START
     return STATE_TABLE[previousState_][BACKUP];
   }
+
+  return false;
 }
 
 TOKENS::TYPE FSM::getTokenType() const {
