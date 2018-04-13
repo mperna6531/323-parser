@@ -589,7 +589,7 @@ bool Parser::RLP() {
 // Rule 25:
 bool Parser::E() {
   if (TEST_PRINT) {
-    std::cout << "<Expression>  :=  +  <Term>  <Expression Prime>" << std::endl;
+    std::cout << "<Expression>  :=  +  <Term>  <Exp Prime>" << std::endl;
   }
   
   if (T()) {
@@ -602,7 +602,7 @@ bool Parser::E() {
 // Rule 25-2:
 bool Parser::E_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<Expression Prime>  :=  +  <Term>  <Expression>  |  -  <Term>  <Expression>  |  <Empty> " << std::endl;
+    std::cout << "<Expression Prime>  :=  +  <Term>  <Exp Prime>   |  -  <Term>  <Exp Prime>  |  <Empty> " << std::endl;
   }
 
   bool result = false;
