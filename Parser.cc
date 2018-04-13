@@ -193,8 +193,6 @@ bool Parser::Q() {
     std::cout << "<Qualifier>  :=  int  |  bolean  |  real"  << std::endl;
   }
 
-  
-
   if (compare_lexeme("int") || compare_lexeme("boolean") || compare_lexeme("real")) {
     next_token();
     return true;
