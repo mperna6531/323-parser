@@ -63,7 +63,7 @@ void FSM::transition(char input) {
   previousState_ = currentState_;
   currentState_ = static_cast<STATE>(STATE_TABLE[currentState_][in]);
 
-  if((!is_accepting() && !is_in_comment() && previousState_!= FSM::COMM_IN ) || currentState_ == UNKNOWN)
+  if((!is_accepting() && !is_in_comment() && previousState_!= FSM::COMM_IN))
     lexeme_.push_back(input);
 }
 
@@ -94,8 +94,10 @@ bool FSM::backup() const {
 }
 
 TOKENS::TYPE FSM::getTokenType() const {
-  if(is_accepting()) {
-    switch(previousState_) {
+  if (currentState_ == UNKNOWN) return TOKENS::UNKNOWN;
+
+  if (is_accepting()) {
+    switch (previousState_) {
       case OP_1A:
       case OP_2A:
       case EQ_A:
@@ -111,10 +113,8 @@ TOKENS::TYPE FSM::getTokenType() const {
         return TOKENS::REAL;
       case SEP_ACC:
         return TOKENS::SEPARATOR;
-      case UNKNOWN:
-        return TOKENS::UNKNOWN;
       default:
-        return TOKENS::UNKNOWN;
+        break;
     }
   }
 
@@ -128,7 +128,6 @@ bool FSM::is_in_comment() const {
 const std::string FSM::getLexeme() const {
   return lexeme_;
 }
-
 
 void FSM::reset() {
   currentState_ = START;

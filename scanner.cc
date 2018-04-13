@@ -17,17 +17,18 @@ void Scanner::lexer(std::string &expression, int line_num) {
     // pass input to machine to transition between states
     machine_.transition(expression[i]);
 
-    // determine if machine is in accepting state
+    // Determine if machine is in accepting state.  If machine has clicked over 
+    // to starting state from accepting state and needs to backup and current 
+    // space != whitespace, decrement i to re-process last char from starting state
     if (machine_.is_accepting()) {
       if (machine_.backup()) {
         if (!isspace(expression[i])) {
-          --i;  // if machine has clicked over to accepting mode and current space != whitespace, decrement i to re-process char
+          --i;  
         }
       }
-
+       // create new Token obj and add to tokens_ vector
       lexeme = machine_.getLexeme();
       tknType = machine_.getTokenType();
-      // create new Token obj and add to tokens_ vector
       Token newToken(tknType, lexeme, line_num);
       tokens_.push_back(newToken);
       // reset everything:
