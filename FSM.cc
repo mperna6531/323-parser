@@ -63,7 +63,7 @@ void FSM::transition(char input) {
   previousState_ = currentState_;
   currentState_ = static_cast<STATE>(STATE_TABLE[currentState_][in]);
 
-  if((!is_accepting() && !is_in_comment() && previousState_!= FSM::COMM_IN))
+  if((!is_accepting() && currentState_ != COMM_IN && previousState_!= COMM_IN))
     lexeme_.push_back(input);
 }
 
@@ -119,10 +119,6 @@ TOKENS::TYPE FSM::getTokenType() const {
   }
 
   return TOKENS::UNKNOWN;
-}
-
-bool FSM::is_in_comment() const {
-  return (currentState_ == COMM_IN);
 }
 
 const std::string FSM::getLexeme() const {

@@ -40,7 +40,6 @@ const int STATE_TABLE[16][14] =
 
   bool is_key() const;
   std::string lexeme_;
-  bool is_in_comment() const;
 public:
   FSM();
   void transition(char input);
