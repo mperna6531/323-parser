@@ -29,7 +29,9 @@ const std::string Token::getTokenType() const {
   }
 }
 
-const int Token::get_line_num() const { return line_num_; }
+const int Token::get_line_num() const { 
+  return line_num_; 
+}
 
 const std::string Token::getLexeme() const{
   return lexeme_;
