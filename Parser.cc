@@ -9,10 +9,11 @@ void Parser::print_token() {
 
 void Parser::next_token() {
   try {
-    if(it_ != tokens_.end())
+    if (it_ != tokens_.end())
       ++it_;
     else
       throw std::out_of_range("iterator it_ out of range...exiting");
+      
   } catch (const std::out_of_range &e) {
     std::cout << e.what() << std::endl;
     exit(1);   
