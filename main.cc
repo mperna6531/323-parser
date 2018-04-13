@@ -26,9 +26,9 @@ int main(int argc, char **argv) {
     std::string expression;
     int line_num = 0;
 
-    while (getline(inputFile, expression)) {
+    while (getline(inputFile, expression)) 
       scan.lexer(expression, ++line_num);
-    }
+    
     // Write to File and Display Tokens:
     std::cout << std::left << std::setw(20) << "Token" << std::left << std::setw(20) << "Lexeme" << std::endl << std::endl;
     outputFile << std::left << std::setw(20)<< "Token" << std::left << std::setw(20) << "Lexeme" << std::endl << std::endl;
