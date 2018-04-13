@@ -28,7 +28,7 @@ const std::string Token::getTokenType() const {
   }
 }
 
-const int Token::get_line_num() const { 
+const unsigned Token::get_line_num() const { 
   return line_num_; 
 }
 
