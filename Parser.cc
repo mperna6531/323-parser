@@ -207,17 +207,7 @@ bool Parser::B() {
     std::cout << "<Body>  :=  {  <Statement List>  }"  << std::endl;
   }
 
-  if (compare_lexeme("{")) {
-    next_token();
-    if (SL()) {
-      if (compare_lexeme("}")) {
-        next_token();
-        return true;
-      }
-    }
-  }
-
-  return false;
+  return CMP();
 } 
 
 // Rule 10:
@@ -417,7 +407,7 @@ bool Parser::I() {
     next_token();
     if (compare_lexeme("(")) {
       next_token();
-      if(CND()) {
+      if (CND()) {
         if (compare_lexeme(")")) {
           next_token();
           if (S()) {
