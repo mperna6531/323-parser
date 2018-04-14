@@ -574,12 +574,11 @@ bool Parser::RLP() {
 // Rule 25:
 bool Parser::E() {
   if (TEST_PRINT) {
-    std::cout << "<Expression>  :=  +  <Term>  <Expression Prime>" << std::endl;
+    std::cout << "<Expression>  :=  <Term>  <Expression Prime>" << std::endl;
   }
   
-  if (T()) {
+  if (T()) 
     return E_PRIME();
-  }
 
   return false;
 }
@@ -663,26 +662,17 @@ bool Parser::PMY() {
     compare_lexeme("true") || compare_lexeme("false")) {
     next_token();
     result = true;
-  } else if (it_->getLexeme() == "(") {
+  } else if (compare_lexeme("(")) {
     next_token();
     if (E()) { 
-      if (it_->getLexeme() == ")") {
+      if (compare_lexeme(")")) {
         next_token();
         result = true;
       }
     }
   } else if (compare_token_type("Identifier")) {
-      next_token();
-      if (compare_lexeme("(")) {
-        next_token();
-        if (IDS()) {
-          if (compare_lexeme(")")) {
-            next_token();
-            result = true;
-          }
-        }
-      }
-      result = PMY_PRIME();
+    next_token();
+    result = PMY_PRIME();
   }
 
   return result;
