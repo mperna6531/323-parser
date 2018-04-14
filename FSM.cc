@@ -67,7 +67,7 @@ void FSM::transition(char input) {
 }
 
 bool FSM::push_current() const {
-  bool not_comment = currentState_ != COMM_IN && previousState_ != COMM_IN;
+  bool not_comment = (currentState_ != COMM_IN && previousState_ != COMM_IN);
 
     if (not_comment) {
       if (is_accepting()) {
