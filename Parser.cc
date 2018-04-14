@@ -48,7 +48,7 @@ void Parser::parse() {
 // Rule 1:
 bool Parser::R18S() {
   if (TEST_PRINT) {
-    std::cout << "<Rat 18S>  :=  <Opt Function Definitions>  %%  <Opt Declaration List>  <Statement List>"  << std::endl;
+    std::cout << "\t<Rat 18S> := <Opt Function Definitions> %% <Opt Declaration List> <Statement List>"  << std::endl;
   }
 
   if (OFD()) {
@@ -66,7 +66,7 @@ bool Parser::R18S() {
 // Rule 2:
 bool Parser::OFD() {
   if (TEST_PRINT) {
-    std::cout << "<Function>  :=  <Function Definitions>  |  <Empty>"  << std::endl;
+    std::cout << "\t<Function> := <Function Definitions> | <Empty>"  << std::endl;
   }
 
   if (compare_lexeme("%%")) 
@@ -78,7 +78,7 @@ bool Parser::OFD() {
 // Rule 3:
 bool Parser::FD() {
   if (TEST_PRINT) {
-    std::cout << "<Function Definitions>  :=  <Function>  <FD Prime>"  << std::endl;
+    std::cout << "\t<Function Definitions> := <Function> <FD Prime>"  << std::endl;
   }
 
   if (F())
@@ -90,7 +90,7 @@ bool Parser::FD() {
 // Rule 3-2:
 bool Parser::FD_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<FD Prime>  :=  <Function Definitions>  |  <Empty>"  << std::endl;
+    std::cout << "\t<FD Prime> := <Function Definitions> | <Empty>"  << std::endl;
   }
 
   if (compare_lexeme("function")) 
@@ -103,7 +103,7 @@ bool Parser::FD_PRIME() {
 // Rule 4:
 bool Parser::F() {
   if (TEST_PRINT) {
-    std::cout << "<Function>  :=  function  <Identifier>  [ <Opt Parameter List> ]  <Opt Declaration List>  <Body>"  << std::endl;
+    std::cout << "\t<Function> := function <Identifier> [ <Opt Parameter List> ] <Opt Declaration List> <Body>"  << std::endl;
   }
 
   if (compare_lexeme("function")) {
@@ -130,7 +130,7 @@ bool Parser::F() {
 // Rule 5:
 bool Parser::OPL() {
   if (TEST_PRINT) {
-    std::cout << "<Opt Parameter List>  := <Parameter List>  |  <Empty>"  << std::endl;
+    std::cout << "\t<Opt Parameter List> := <Parameter List> | <Empty>"  << std::endl;
   }
 
   if (compare_lexeme("]"))
@@ -142,7 +142,7 @@ bool Parser::OPL() {
 // Rule 6:
 bool Parser::PL() {
   if (TEST_PRINT) {
-    std::cout << "<Parameter List>  :=  <Parameter>  <PL Prime>"  << std::endl;
+    std::cout << "\t<Parameter List> := <Parameter> <PL Prime>"  << std::endl;
   }
 
   if (P())
@@ -154,7 +154,7 @@ bool Parser::PL() {
 // Rule 6-2:
 bool Parser::PL_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<PL Prime>  :=  ,  <Parameter List>  |  <Empty>"  << std::endl;
+    std::cout << "\t<PL Prime> := , <Parameter List> | <Empty>"  << std::endl;
   }
 
   if (compare_lexeme(",")) {
@@ -168,7 +168,7 @@ bool Parser::PL_PRIME() {
 // Rule 7:
 bool Parser::P() {
   if (TEST_PRINT) {
-    std::cout << "<Parameter>  :=  <IDs>  :  <Qualifier>"  << std::endl;
+    std::cout << "\t<Parameter> := <IDs> : <Qualifier>"  << std::endl;
   }
 
   if (IDS()) {
@@ -184,7 +184,7 @@ bool Parser::P() {
 // Rule 8:
 bool Parser::Q() {
   if (TEST_PRINT) {
-    std::cout << "<Qualifier>  :=  int  |  bolean  |  real"  << std::endl;
+    std::cout << "\t<Qualifier> := int | bolean | real"  << std::endl;
   }
 
   if (compare_lexeme("int") || compare_lexeme("boolean") || compare_lexeme("real")) {
@@ -198,7 +198,7 @@ bool Parser::Q() {
 // Rule 9:
 bool Parser::B() {
   if (TEST_PRINT) {
-    std::cout << "<Body>  :=  {  <Statement List>  }"  << std::endl;
+    std::cout << "\t<Body> := { <Statement List> }"  << std::endl;
   }
 
   return CMP();
@@ -207,7 +207,7 @@ bool Parser::B() {
 // Rule 10:
 bool Parser::ODL() {
   if (TEST_PRINT) {
-    std::cout << "<Opt Declaration List>  :=  <Declaration List>  |  <Empty>"  << std::endl;
+    std::cout << "\t<Opt Declaration List> := <Declaration List> | <Empty>"  << std::endl;
   }
 
   if (compare_lexeme("int") || compare_lexeme("boolean") || compare_lexeme("real"))
@@ -220,7 +220,7 @@ bool Parser::ODL() {
 // Rule 11
 bool Parser::DL() {
   if (TEST_PRINT) {
-    std::cout << "<Delcaration List>  :=  <Declaration>  ;  <DL Prime>"  << std::endl;
+    std::cout << "\t<Delcaration List> := <Declaration> ; <DL Prime>"  << std::endl;
   }
 
   if (D()) {
@@ -236,7 +236,7 @@ bool Parser::DL() {
 // Rule 11-2:
 bool Parser::DL_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<DL Prime>  :=  <Declaration List>  |  <Empty>"  << std::endl;
+    std::cout << "\t<DL Prime> := <Declaration List> | <Empty>"  << std::endl;
   }
   
   if (compare_lexeme("int") || compare_lexeme("boolean") || compare_lexeme("real"))
@@ -248,7 +248,7 @@ bool Parser::DL_PRIME() {
 // Rule 12
 bool Parser::D() {
   if (TEST_PRINT) {
-    std::cout << "<Delcaration>  :=  <Qualifier>  <IDs>"  << std::endl;
+    std::cout << "\t<Delcaration> := <Qualifier> <IDs>"  << std::endl;
   }
 
   if (Q()) 
@@ -260,7 +260,7 @@ bool Parser::D() {
 // Rule 13:
 bool Parser::IDS() {
   if (TEST_PRINT) {
-    std::cout << "<IDs>  := id <IDs Prime>" << std::endl;
+    std::cout << "\t<IDs> := id <IDs Prime>" << std::endl;
   }
   
   if (compare_token_type("Identifier")) {
@@ -274,7 +274,7 @@ bool Parser::IDS() {
 // Rule 13-2:
 bool Parser::IDS_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<IDs Prime>  := , <IDs>  | <Empty>" << std::endl;
+    std::cout << "\t<IDs Prime> := , <IDs> | <Empty>" << std::endl;
   }
   
   if (compare_lexeme(",")) {
@@ -289,7 +289,7 @@ bool Parser::IDS_PRIME() {
 // Rule 14:
 bool Parser::SL() {
   if (TEST_PRINT) {
-    std::cout << "<Statement List>  :=  <Statement>  <SL Prime>" << std::endl;
+    std::cout << "\t<Statement List> := <Statement> <SL Prime>" << std::endl;
   }
 
   if (S())
@@ -301,7 +301,7 @@ bool Parser::SL() {
 // Rule 14-2:
 bool Parser::SL_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<SL Prime>  :=  <Statement List>  |  <Empty>" << std::endl;
+    std::cout << "\t<SL Prime> := <Statement List> | <Empty>" << std::endl;
   }
   
   if (compare_lexeme("{") || compare_token_type("Identifier") || compare_token_type("Keyword"))
@@ -316,7 +316,7 @@ bool Parser::SL_PRIME() {
 // Rule 15:
 bool Parser::S() {
   if (TEST_PRINT) {
-    std::cout << "<Statement>  :=  <Compound>  |  <Assign>  |  <If>  |  <Return>  |  <Print>  |  <Scan>  |  <While>"  << std::endl;
+    std::cout << "\t<Statement> := <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>"  << std::endl;
   }
 
   if (compare_token_type("Identifier"))
@@ -340,7 +340,7 @@ bool Parser::S() {
 // Rule 16:
 bool Parser::CMP() {
   if (TEST_PRINT) {
-    std::cout << "<Compound>  :=  {  <Statement List>  }" << std::endl;
+    std::cout << "\t<Compound> := { <Statement List> }" << std::endl;
   }
 
   if (compare_lexeme("{")) {
@@ -359,7 +359,7 @@ bool Parser::CMP() {
 // Rule 17:
 bool Parser::A() {
   if (TEST_PRINT) {
-    std::cout << "<Assign>  :=  <identifier>  =  <Expression>  ;" << std::endl;
+    std::cout << "\t<Assign> := <identifier> = <Expression> ;" << std::endl;
   }
 
   if (compare_token_type("Identifier")) {
@@ -381,7 +381,7 @@ bool Parser::A() {
  // Rule 18:
 bool Parser::I() {
   if (TEST_PRINT) {
-    std::cout << "<If>  :=  if  (  <Condition>  )  <Statement>  <If Prime>" << std::endl;
+    std::cout << "\t<If> := if ( <Condition> ) <Statement> <If Prime>" << std::endl;
   }
 
   if (compare_lexeme("if")) {
@@ -405,7 +405,7 @@ bool Parser::I() {
 // Rule 18-2:
 bool Parser::I_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<If Prime>  :=  endif  |  else  <Statement>  endif" << std::endl;
+    std::cout << "\t<If Prime> := endif | else <Statement> endif" << std::endl;
   }
 
   bool result = false;
@@ -430,7 +430,7 @@ bool Parser::I_PRIME() {
 // Rule 19:
 bool Parser::R() {
   if (TEST_PRINT) {
-    std::cout << "<Return> :=  return  <Return Prime>" << std::endl;
+    std::cout << "\t<Return> := return <Return Prime>" << std::endl;
   }
 
   if (compare_lexeme("return")) {
@@ -444,7 +444,7 @@ bool Parser::R() {
 // Rule 19-2:
 bool Parser::R_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<Return_Prime>  :=  ;  |  <Expression>  ;" << std::endl;
+    std::cout << "\t<Return_Prime> := ; | <Expression> ;" << std::endl;
   }
 
   bool result = false;
@@ -467,7 +467,7 @@ bool Parser::R_PRIME() {
 // Rule 20:
 bool Parser::PR() {
   if (TEST_PRINT) {
-    std::cout << "<Print>  :=  put  (  <Expression>  )  ;" << std::endl;
+    std::cout << "<Print> := put ( <Expression> ) ;" << std::endl;
   }
 
   if (compare_lexeme("put")) {
@@ -492,7 +492,7 @@ bool Parser::PR() {
 // Rule 21:
 bool Parser::SC() {
   if (TEST_PRINT) {
-    std::cout << "<Scan>  := get  (  <IDs>  )  ;" << std::endl;
+    std::cout << "\t<Scan> := get ( <IDs> ) ;" << std::endl;
   }
 
   if (compare_lexeme("get")) {
@@ -518,7 +518,7 @@ bool Parser::SC() {
 // Rule 22:
 bool Parser::W() {
   if (TEST_PRINT) {
-    std::cout << "<While>  :=  while ( <Condition> ) <Statement>" << std::endl;
+    std::cout << "\t<While> := while ( <Condition> ) <Statement>" << std::endl;
   }
 
   if (compare_lexeme("while")) {
@@ -540,7 +540,7 @@ bool Parser::W() {
 // Rule 23:
 bool Parser::CND() {
   if (TEST_PRINT) {
-    std::cout << "<Condition>  :=  <Expression>  <Relop>  <Expression>" << std::endl;
+    std::cout << "\t<Condition> := <Expression> <Relop> <Expression>" << std::endl;
   }
 
   if (E())
@@ -553,7 +553,7 @@ bool Parser::CND() {
 // Rule 24:
 bool Parser::RLP() {
   if (TEST_PRINT) {
-    std::cout << "<Relop> :=  ==  | ^=  |  >  | < | =>  | =<" << std::endl;
+    std::cout << "\t<Relop> := == | ^= | > | < | => | =<" << std::endl;
   }
 
   bool result = (compare_lexeme("==") || compare_lexeme("^=") || compare_lexeme(">") ||
@@ -568,7 +568,7 @@ bool Parser::RLP() {
 // Rule 25:
 bool Parser::E() {
   if (TEST_PRINT) {
-    std::cout << "<Expression>  :=  <Term>  <Expression Prime>" << std::endl;
+    std::cout << "\t<Expression> := <Term> <Expression Prime>" << std::endl;
   }
   
   if (T()) 
@@ -580,7 +580,7 @@ bool Parser::E() {
 // Rule 25-2:
 bool Parser::E_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<Expression Prime>  :=  +  <Term>  <Expression Prime>   |  -  <Term>  <Expression Prime>  |  <Empty> " << std::endl;
+    std::cout << "\t<Expression Prime> := + <Term> <Expression Prime>  | -  <Term> <Expression Prime> | <Empty> " << std::endl;
   }
 
   bool result = false;
@@ -600,7 +600,7 @@ bool Parser::E_PRIME() {
 // Rule 26:
 bool Parser::T() {
   if (TEST_PRINT) {
-    std::cout << "<Term>  :=  <Factor>   <Term Prime>" << std::endl;
+    std::cout << "\t<Term> := <Factor>  <Term Prime>" << std::endl;
   }
 
   if(FA())
@@ -612,7 +612,7 @@ bool Parser::T() {
 // Rule 26-2:
 bool Parser::T_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<Term Prime>  :=  *  <Factor>  <Term Prime>  |  /  <Factor>  <Term Prime>  |  <Empty> " << std::endl;
+    std::cout << "\t<Term Prime> := * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty> " << std::endl;
   }
 
   bool result = false;
@@ -634,7 +634,7 @@ bool Parser::T_PRIME() {
 // Rule 27:
 bool Parser::FA() {
   if (TEST_PRINT) {
-    std::cout << "<Factor>  :=  -  <Primary>  |  <Primary>" << std::endl;
+    std::cout << "\t<Factor> := - <Primary> | <Primary>" << std::endl;
   }
   
   if (compare_lexeme("-")) {
@@ -647,7 +647,7 @@ bool Parser::FA() {
 // Rule 28:
 bool Parser::PMY() {
   if (TEST_PRINT) {
-		std::cout << "<Primary>  ::=  <Integer>  |   <Identifier>  <Primary Prime>  |   ( <Expression> )   |  <Real>  |   true   |  false " << std::endl;
+		std::cout << "\t<Primary> ::= <Integer> |  <Identifier>  <Primary Prime> | ( <Expression> ) | <Real> | true | false " << std::endl;
 	}
 
   bool result = false;
@@ -675,7 +675,7 @@ bool Parser::PMY() {
 // Rule 28-2:
 bool Parser::PMY_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<Primary Prime>  :=  (  <IDs>  ) |  <EMPTY>" << std::endl;
+    std::cout << "\t<Primary Prime> := ( <IDs> ) | <EMPTY>" << std::endl;
   }
   
   if (compare_lexeme("(")) {
@@ -694,7 +694,7 @@ bool Parser::PMY_PRIME() {
 // Rule 29:
 bool Parser::EMP() {
   if (TEST_PRINT) {
-    std:: cout << "<Empty>" << std::endl;
+    std:: cout << "\t<Empty>" << std::endl;
   }
 
   return true;
