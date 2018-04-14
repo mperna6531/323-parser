@@ -57,41 +57,58 @@ void FSM::transition(char input) {
     return;  // ignore white space in starting state *special case
 
   if (in == WHITE_SPACE)
-   in = OTHER;
+    in = OTHER;
 
   previousState_ = currentState_;
   currentState_ = static_cast<STATE>(STATE_TABLE[currentState_][in]);
-
-  if((!is_accepting() && currentState_ != COMM_IN && previousState_!= COMM_IN))
+  
+  if (push_current())
     lexeme_.push_back(input);
+}
+
+bool FSM::push_current() const {
+  bool not_comment = currentState_ != COMM_IN && previousState_ != COMM_IN;
+
+    if (not_comment) {
+      if (is_accepting()) {
+        return (previousState_ == START);
+      } else {
+        return !is_accepting();
+      }
+    }
+
+    return false;
 }
 
 bool FSM::is_accepting() const {
   bool accepting = false;
   // if machine has clicked over to starting state from an accepting state then return true -- machine has determined end of token
-  if (currentState_ == START)
+  if (currentState_ == START) {
     accepting = ((previousState_ == INT_ACC) || (previousState_ == REAL_ACC) || (previousState_ == ID_L) ||
       (previousState_ == ID_DS) || (previousState_ == OP_1A) || (previousState_ == OP_2A) ||
       (previousState_ == EQ_A) || (previousState_ == SEP_ACC));
-  else
-    accepting = (currentState_ == UNKNOWN);
-    
+  } else {
+    // UNKNOWN is unknown token is accepting state for unknown token
+    accepting = (currentState_ == UNKNOWN || currentState_ == INV_R);
+  }
   return accepting;
 }
 
 bool FSM::backup() const {
-  // special case if starting with illegal char
-  if(currentState_ == UNKNOWN) {
-    if(previousState_ == START) {
-        return false;
-    } else { // currentState == UNKNOWN && previousState_ != START
+  // special case if starting with illegal char - do not back up and re-process
+  if (currentState_ == UNKNOWN) {
+    if (previousState_ == START) {
+      return false;
+    } else {
       return STATE_TABLE[currentState_][BACKUP];
     }
-  } else if (currentState_ == START) { // currentState == START
+  } else if (currentState_ == START && previousState_ != START) {
+    // determine if machine is in starting state from accepting state and not initial char
+    // if yes then return BACKUP value for last state
     return STATE_TABLE[previousState_][BACKUP];
+  } else {
+    return STATE_TABLE[currentState_][BACKUP];
   }
-
-  return false;
 }
 
 TOKENS::TYPE FSM::getTokenType() const {
