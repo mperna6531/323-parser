@@ -1,5 +1,4 @@
 #include <iomanip>
-#include <stdexcept>
 #include "Parser.hh"
 
 bool Parser::compare_token_type(const std::string &tkn) const {
@@ -23,17 +22,12 @@ void Parser::print_token() const {
 }
 
 void Parser::next_token() {
-  try {
-    if (it_ != tokens_.end())
+    if (it_ != tokens_.end()) {
       ++it_;
-    else
-      throw std::out_of_range("iterator it_ out of range...exiting");
-      
-  } catch (const std::out_of_range &e) {
-    std::cout << e.what() << std::endl;
-    exit(1);   
-  }
-
+    } else {
+      std::cout << "Attempt to parse token beyond vector; illegal increment of iterator";
+      exit(1);
+    }
     print_token();
 }
 
