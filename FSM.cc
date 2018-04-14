@@ -73,7 +73,7 @@ bool FSM::push_current() const {
       if (is_accepting()) {
         return (previousState_ == START);
       } else {
-        return !is_accepting();
+        return true;
       }
     }
 
