@@ -215,7 +215,6 @@ bool Parser::ODL() {
   if (TEST_PRINT) {
     std::cout << "<Opt Declaration List>  :=  <Declaration List>  |  <Empty>"  << std::endl;
   }
-  
 
   if (compare_lexeme("int") || compare_lexeme("boolean") || compare_lexeme("real"))
     return DL();
@@ -284,16 +283,14 @@ bool Parser::IDS_PRIME() {
     std::cout << "<IDs Prime>  := , <IDs>  | <Empty>" << std::endl;
   }
   
-  bool result = false;
-
   if (compare_lexeme(",")) {
     next_token();
-    result = IDS(); 
-  } else { // empty
-    result = EMP();
-  }
-  return result;
+    return IDS(); 
+  } 
+
+  return EMP();
 }
+
 
 // Rule 14:
 bool Parser::SL() {
@@ -327,25 +324,19 @@ bool Parser::S() {
   if (TEST_PRINT) {
     std::cout << "<Statement>  :=  <Compound>  |  <Assign>  |  <If>  |  <Return>  |  <Print>  |  <Scan>  |  <While>"  << std::endl;
   }
-  
+
   if (compare_token_type("Identifier"))
     return A();
-
   if (compare_lexeme("{"))
     return CMP();
-
   if (compare_lexeme("if"))
     return I();
-
   if (compare_lexeme("return"))
     return R();
-
   if (compare_lexeme("put"))
     return PR();
-
   if (compare_lexeme("get"))
     return SC();
-
   if (compare_lexeme("while"))
     return W();
 
@@ -377,8 +368,6 @@ bool Parser::A() {
     std::cout << "<Assign>  :=  <identifier>  =  <Expression>  ;" << std::endl;
   }
 
-  bool result = false;
-
   if (compare_token_type("Identifier")) {
     next_token();
     if (compare_lexeme("=")) {
@@ -386,15 +375,13 @@ bool Parser::A() {
       if (E()) {
         if (compare_lexeme(";")) {
           next_token();
-          result = true;
+          return true;
         }
       }
-    } else {
-      result = false;
     }
-  }
+  } 
 
-  return result;
+  return false;
 }
 
  // Rule 18:
@@ -442,6 +429,7 @@ bool Parser::I_PRIME() {
       }
     }
   }
+
   return result;
 } 
 
@@ -462,7 +450,7 @@ bool Parser::R() {
 // Rule 19-2:
 bool Parser::R_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<Return_Prime>  :=  ; |  <Expression>" << std::endl;
+    std::cout << "<Return_Prime>  :=  ;  |  <Expression>  ;" << std::endl;
   }
 
   bool result = false;
@@ -493,7 +481,7 @@ bool Parser::PR() {
     if (compare_lexeme("(")) {
       next_token();
       if (E()) {
-        if (compare_lexeme(")")){
+        if (compare_lexeme(")")) {
           next_token();
           if (compare_lexeme(";")) {
             next_token();
@@ -700,31 +688,23 @@ bool Parser::PMY() {
   return result;
 }
 
-
 // Rule 28-2:
 bool Parser::PMY_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "<Primary Prime>  :=  <IDs>  |  <EMPTY>" << std::endl;
+    std::cout << "<Primary Prime>  :=  (  <IDs>  ) |  <EMPTY>" << std::endl;
   }
-
-  bool result = false;
-  if (compare_token_type("Identifier")) {
-    next_token();
-    if (compare_lexeme("(")) {
+  
+  if (compare_lexeme("(")) {
       next_token();
       if (IDS()) {
-        next_token();
-        if (compare_lexeme("))")) {
+        if (compare_lexeme(")")) {
           next_token();
-          result = true;
+          return true;
         }
       }
     }
-  } else {  // else return empty
-    result = EMP();
-  }
 
-  return result;
+  return EMP();
 }
 
 // Rule 29:
