@@ -6,7 +6,7 @@
 
 #include "token.hh"
 #include "scanner.hh"
-#include "ParseError.hh"
+#include "syntax_error.hh"
 
 class Parser {
 private:
