@@ -8,6 +8,7 @@ bool Parser::compare_token_type(const std::string &tkn) const {
   return false;
 }
 
+
 bool Parser::compare_lexeme(const std::string &lex) const {
   if (it_ != tokens_.end())
     return (it_->getLexeme().compare(lex) == 0);
@@ -15,17 +16,41 @@ bool Parser::compare_lexeme(const std::string &lex) const {
   return false;
 }
 
-void Parser::print_token() const {
+std::string Parser::get_lexeme() const {
   if (it_ != tokens_.end())
+    return it_->getLexeme();
+
+  return "";
+}
+
+bool Parser::error(const std::string &msg, int line_num) const {
+  std::cout << "Parse Error.  Expected " << msg << ", line: " << line_num << std::endl; 
+  return false;
+}
+
+int Parser::get_line_num() const {
+  if (it_ != tokens_.end())
+    return it_->get_line_num();
+  
+  return (it_ - 1)->get_line_num();
+}
+
+void Parser::print_token() const {
+  if (it_ != tokens_.end()) {
     std::cout << '\n' << std::left << std::setw(20) << "Token: " + it_-> getTokenType() << std::left << std::setw(20) << 
     "Lexeme: " + it_->getLexeme() << std::endl;
+
+    if (it_->getTokenType().compare("UNKNOWN") == 0) {
+      std::cout << "Invalid Token, line: " << get_line_num() << std::endl;
+    }
+  }
 }
 
 void Parser::next_token() {
     if (it_ != tokens_.end()) {
       ++it_;
     } else {
-      std::cout << "Attempt to parse token beyond vector; illegal increment of iterator";
+      std::cout << "End of tokens; illegal increment of iterator";
       exit(1);
     }
     print_token();
@@ -40,7 +65,7 @@ void Parser::parse() {
     if (R18S()) {
       std::cout << "Successfull Parse of RAT18S Program." << std::endl;
     } else {
-      std::cout << "Parse error." << std::endl;
+      std::cout << "...Exiting" << std::endl;
     }
     
 }
@@ -57,6 +82,8 @@ bool Parser::R18S() {
       if (ODL()) {
         return SL();
       }
+    } else {
+      return error("%%", get_line_num());
     }
   }
 
@@ -118,13 +145,17 @@ bool Parser::F() {
             if (ODL()) {
               return B();
             }
-          }
+          } return error("]", get_line_num());
         }
+      } else {
+        return error("[", get_line_num());
       }
+    } else {
+      return error("Identifier", get_line_num());
     }
   }
   
-  return false;
+  return error("Keyword 'function'", get_line_num());
 }
 
 // Rule 5:
@@ -175,10 +206,10 @@ bool Parser::P() {
     if (compare_lexeme(":")) {
       next_token();
       return Q();
-    }
-  }
+    } else return error(":", get_line_num());
+  } 
 
-  return false;
+  return error("Identifier(s)", get_line_num());
 } 
 
 // Rule 8:
@@ -192,7 +223,7 @@ bool Parser::Q() {
     return true;
   }
 
-  return false;
+  return error("Qualifier", get_line_num());
 }
 
 // Rule 9:
@@ -227,10 +258,12 @@ bool Parser::DL() {
     if (compare_lexeme(";")) {
       next_token();
       return DL_PRIME();
+    } else {
+      return error("';'", get_line_num());
     }
   }
 
-  return false;
+  return error("Declaration List", get_line_num());
 }
 
 // Rule 11-2:
@@ -266,9 +299,9 @@ bool Parser::IDS() {
   if (compare_token_type("Identifier")) {
     next_token();
     return IDS_PRIME();
-  }
+  } 
 
-  return false;
+  return error("Identifier", get_line_num());
 }
 
 // Rule 13-2:
@@ -334,7 +367,7 @@ bool Parser::S() {
   if (compare_lexeme("while"))
     return W();
 
-  return false;
+  return error("Statement", get_line_num());
 }
 
 // Rule 16:
@@ -349,10 +382,13 @@ bool Parser::CMP() {
       if (compare_lexeme("}")) {
         next_token();
         return true;
+      } else {
+        return error("}", get_line_num());
       }
     }
+  } else {
+    return error("'{'", get_line_num());
   }
-
   return false;
 }  
 
@@ -370,12 +406,19 @@ bool Parser::A() {
         if (compare_lexeme(";")) {
           next_token();
           return true;
+        } else {
+          return error("';'", get_line_num());
         }
       }
+    } else {
+      return error("'='", get_line_num());
     }
-  } 
+  } else {
+    return error("Identifier", get_line_num());
+  }
 
   return false;
+
 }
 
  // Rule 18:
@@ -457,6 +500,8 @@ bool Parser::R_PRIME() {
       if (compare_lexeme(";")) {
         next_token();
         result = true;
+      } else {
+        return error("';'", get_line_num());
       }
     }
   }
@@ -480,9 +525,15 @@ bool Parser::PR() {
           if (compare_lexeme(";")) {
             next_token();
             return true;
+          } else {
+            return error("';'", get_line_num());
           }
+        } else {
+          return error("')'", get_line_num());
         }
       }
+    } else {
+      return error("'('", get_line_num());
     }
   }
 
@@ -505,9 +556,15 @@ bool Parser::SC() {
           if  (compare_lexeme(";")) {
             next_token();
             return true;
+          } else {
+            return error("';'", get_line_num());
           }
+        } else {
+          return error("')'", get_line_num());
         }
       }
+    } else {
+      return error("'('", get_line_num());
     }
   }
   
@@ -529,8 +586,12 @@ bool Parser::W() {
         if (compare_lexeme(")")){
           next_token();
           return S();
+        } else {
+          return error("')'", get_line_num());
         }
       }
+    } else {
+      return error("'('", get_line_num());
     }
   }
 
@@ -543,9 +604,13 @@ bool Parser::CND() {
     std::cout << "\t<Condition> := <Expression> <Relop> <Expression>" << std::endl;
   }
 
-  if (E())
-    if (RLP())
+  if (E()) {
+    if (RLP()) {
       return E();
+    } else {
+      return error("Relational operator", get_line_num());
+    }
+  }
 
   return false;
 }
@@ -591,8 +656,11 @@ bool Parser::E_PRIME() {
     } else {
       result = false;
     }
-  } else { //empty
+  } else if ((compare_lexeme(")") || compare_lexeme(";") || compare_token_type("Operator"))) { //empty
     result = EMP();
+  }
+  else {
+  result = error("operator or end of expression", get_line_num());
   }
   return result;
 }
@@ -612,7 +680,7 @@ bool Parser::T() {
 // Rule 26-2:
 bool Parser::T_PRIME() {
   if (TEST_PRINT) {
-    std::cout << "\t<Term Prime> := * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty> " << std::endl;
+    std::cout << "\t<Term Prime> := * <Factor> <Term Prime> | / <Factor> <Term Prime> | <Empty>" << std::endl;
   }
 
   bool result = false;
@@ -624,8 +692,11 @@ bool Parser::T_PRIME() {
     } else {
       result = false;
     } 
-  } else { // empty
+  } else if (compare_lexeme(")") || compare_lexeme(";") || compare_token_type("Operator")) { 
+    // empty if next lexeme = follow(T) == Follow(E)
     result = EMP();
+  } else {
+    result = error("operator or end of expression", get_line_num());
   }
 
   return result;
@@ -650,26 +721,24 @@ bool Parser::PMY() {
 		std::cout << "\t<Primary> ::= <Integer> |  <Identifier>  <Primary Prime> | ( <Expression> ) | <Real> | true | false " << std::endl;
 	}
 
-  bool result = false;
-
   if (compare_token_type("Integer") || compare_token_type("Real") ||
     compare_lexeme("true") || compare_lexeme("false")) {
     next_token();
-    result = true;
+    return true;
   } else if (compare_lexeme("(")) {
     next_token();
     if (E()) { 
       if (compare_lexeme(")")) {
         next_token();
-        result = true;
+        return true;
       }
     }
   } else if (compare_token_type("Identifier")) {
     next_token();
-    result = PMY_PRIME();
+    return PMY_PRIME();
   }
 
-  return result;
+  return error("Primary", get_line_num()); 
 }
 
 // Rule 28-2:
@@ -678,17 +747,23 @@ bool Parser::PMY_PRIME() {
     std::cout << "\t<Primary Prime> := ( <IDs> ) | <EMPTY>" << std::endl;
   }
   
+  bool result = false;
+
   if (compare_lexeme("(")) {
       next_token();
       if (IDS()) {
         if (compare_lexeme(")")) {
           next_token();
-          return true;
+          result = true;
         }
+      } else {
+        result = false;
       }
+    } else {
+      result = EMP();
     }
 
-  return EMP();
+  return result;
 }
 
 // Rule 29:

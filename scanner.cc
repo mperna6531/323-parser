@@ -14,7 +14,7 @@ void Scanner::lexer(std::string &expression, int line_num) {
 
     // Determine if machine is in accepting state.  If machine has clicked over 
     // to starting state from accepting state and needs to backup and current 
-    // char != whitespace, decrement i to re-process last char from starting state
+    // char != whitespace, decrement i to re-process last char from starting state.
     if (machine_.is_accepting()) {
       if (machine_.backup()) {
         if (!isspace(expression[i])) {
@@ -26,7 +26,7 @@ void Scanner::lexer(std::string &expression, int line_num) {
       TOKENS::TYPE tknType = machine_.getTokenType();
       Token newToken(tknType, lexeme, line_num);
       tokens_.push_back(newToken);
-      // reset everything:
+      
       machine_.reset();
     }
   }

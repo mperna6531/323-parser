@@ -13,13 +13,15 @@ private:
   std::vector<Token> tokens_;
   std::vector<Token>::iterator it_;
 
-  // debugging mode
   static const bool TEST_PRINT = true;
 
   void print_token() const;
   void next_token();
   bool compare_token_type(const std::string &tkn) const;
   bool compare_lexeme(const std::string &lex) const;
+  bool error(const std::string &msg, int line_num) const;
+  int get_line_num() const;
+  std::string get_lexeme() const;
 
   bool R18S();  // Rule 1
   bool OFD();  // Rule 2
