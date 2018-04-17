@@ -37,13 +37,17 @@ int Parser::get_line_num() const {
 
 void Parser::print_token() const {
   if (it_ != tokens_.end()) {
-    std::cout << '\n' << std::left << std::setw(20) << "Token: " + it_-> getTokenType() << std::left << std::setw(20) << 
-    "Lexeme: " + it_->getLexeme() << std::endl;
-
     if (it_->getTokenType().compare("UNKNOWN") == 0) {
-      std::cout << "Invalid Token, line: " << get_line_num() << std::endl;
+      std::cout << "Invalid Token: " << it_->getLexeme() << ", line: " << get_line_num() << std::endl;
+    } else {
+      std::cout << '\n' << std::left << std::setw(20) << "Token: " + it_-> getTokenType() << std::left << std::setw(20) << 
+        "Lexeme: " + it_->getLexeme() << std::endl;
     }
   }
+}
+
+void Parser::dual_print(std::ostream &os, std::string &text) const {
+  
 }
 
 void Parser::next_token() {
@@ -58,7 +62,7 @@ void Parser::next_token() {
 
 Parser::Parser(std::vector<Token> &tokens) : tokens_(tokens), it_(tokens_.begin()) {}
 
-void Parser::parse() {
+void Parser::parse(std::ostream &os) {
   // print starting token
   print_token();
 

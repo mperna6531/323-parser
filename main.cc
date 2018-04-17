@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
     std::vector<Token> t(scan.getTokens());
     Parser p(t);
     
-    p.parse();
+    p.parse(outputFile);
 
     inputFile.close();
     outputFile.close();

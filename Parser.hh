@@ -6,7 +6,6 @@
 
 #include "token.hh"
 #include "scanner.hh"
-#include "syntax_error.hh"
 
 class Parser {
 private:
@@ -14,7 +13,8 @@ private:
   std::vector<Token>::iterator it_;
 
   static const bool TEST_PRINT = true;
-
+  
+  void dual_print(std::ostream &os, std::string &text) const;
   void print_token() const;
   void next_token();
   bool compare_token_type(const std::string &tkn) const;
@@ -64,7 +64,7 @@ private:
   bool EMP();  // Rule 29:
 public:
   Parser(std::vector<Token> &tokens);
-  void parse();
+  void parse(std::ostream &os);
 };
 
 #endif
