@@ -8,7 +8,6 @@ bool Parser::compare_token_type(const std::string &tkn) const {
   return false;
 }
 
-
 bool Parser::compare_lexeme(const std::string &lex) const {
   if (it_ != tokens_.end())
     return (it_->getLexeme().compare(lex) == 0);
@@ -129,7 +128,6 @@ bool Parser::FD_PRIME() {
 
   return EMP();
 }
-
 
 // Rule 4:
 bool Parser::F() {
