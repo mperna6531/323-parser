@@ -4,6 +4,8 @@
 #include<set>
 #include"token.hh"
 
+using TOKENS::TYPE;
+
 class FSM {
 private:
   enum INPUT { CURRENT_STATE = 0, OP_1, EQUAL, CARROT, LT_GT, COMMENT, SEPARATOR, PERCENT, LETTER, DIGIT,
@@ -48,7 +50,7 @@ public:
   bool backup() const;
   void reset();
   const std::string getLexeme() const;
-  TOKENS::TYPE getTokenType() const;
+  TYPE getTokenType() const;
 };
 
 #endif // FSM_H_INCLUDED

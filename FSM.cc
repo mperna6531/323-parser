@@ -1,4 +1,3 @@
-#include<locale>
 #include"token.hh"
 #include"FSM.hh"
 
