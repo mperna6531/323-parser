@@ -12,7 +12,7 @@ private:
   std::vector<Token> tokens_;
   std::vector<Token>::iterator it_;
 
-  static const bool TEST_PRINT = true;
+  static const bool TEST_PRINT = false;
   
   void dual_print(std::ostream &os, std::string &text) const;
   void print_token() const;

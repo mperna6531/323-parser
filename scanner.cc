@@ -2,6 +2,8 @@
 #include "scanner.hh"
 #include "token.hh"
 
+using TOKENS::TYPE;
+
 Scanner::Scanner() {}
 
 void Scanner::lexer(std::string &expression, int line_num) {
