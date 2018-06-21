@@ -32,7 +32,8 @@ int main(int argc, char **argv) {
   
     // Begin syntax analysis
     std::cout << "\n\nBegin Syntax Analysis:\n";
-
+    os << "\n\nBegin Syntax Analysis:\n";
+    
     std::vector<Token> t(scan.getTokens());
     Parser p(t, os);
     
