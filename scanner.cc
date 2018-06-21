@@ -1,8 +1,9 @@
 #include <iostream>
+#include <fstream>
+#include <iomanip>
+
 #include "scanner.hh"
 #include "token.hh"
-
-using TOKENS::TYPE;
 
 Scanner::Scanner() {}
 
@@ -34,8 +35,21 @@ void Scanner::lexer(std::string &expression, int line_num) {
   }
 }
 
-std::vector<Token> Scanner::getTokens()  {
+std::vector<Token> Scanner::getTokens() const {
   return tokens_;
 }
 
+void Scanner::print_tokens(std::ofstream &out) const {
+  // Write to File and Display Tokens:
+  std::cout << std::left << std::setw(20) << "Token" << std::left << std::setw(20) << "Lexeme" << std::endl << std::endl;
+  out << std::left << std::setw(20)<< "Token" << std::left << std::setw(20) << "Lexeme" << std::endl << std::endl;
+
+  for (auto el : tokens_) {
+   std::cout << std::left << std::setw(20) << el.getTokenType() <<
+        std::left << std::setw(20) << el.getLexeme() << std::endl;
+
+    out << std::left << std::setw(20) << el.getTokenType() <<
+      std::left << std::setw(20) << el.getLexeme() << std::endl;  
+  }
+}
 

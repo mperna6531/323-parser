@@ -27,18 +27,8 @@ int main(int argc, char **argv) {
     while (getline(inputFile, expression)) 
       scan.lexer(expression, ++line_num);
     
-    // Write to File and Display Tokens:
-    std::cout << std::left << std::setw(20) << "Token" << std::left << std::setw(20) << "Lexeme" << std::endl << std::endl;
-    outputFile << std::left << std::setw(20)<< "Token" << std::left << std::setw(20) << "Lexeme" << std::endl << std::endl;
-
-    
-    for (auto el : scan.getTokens()) {
-      std::cout << std::left << std::setw(20) << el.getTokenType() <<
-        std::left << std::setw(20) << el.getLexeme() << std::endl;
-
-      outputFile << std::left << std::setw(20) << el.getTokenType() <<
-        std::left << std::setw(20) << el.getLexeme() << std::endl;
-    }
+   
+    scan.print_tokens(outputFile);
   
     // Begin syntax analysis
     std::cout << "\n\nBegin Syntax Analysis:\n";
