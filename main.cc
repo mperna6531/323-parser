@@ -8,38 +8,38 @@
 #include "Parser.hh"
 
 int main(int argc, char **argv) {
-  std::string fileInputName, fileOutputName;
+  std::string file_in_name, file_out_name;
 
   std::cout << "Input Name of File: ";
-  std::getline(std::cin, fileInputName);
+  std::getline(std::cin, file_in_name);
 
   std::cout << "Input Name of Output File: ";
-  std::getline(std::cin, fileOutputName);
+  std::getline(std::cin, file_out_name);
 
-  std::ifstream inputFile(fileInputName);
-  std::ofstream outputFile(fileOutputName);
+  std::ifstream is(file_in_name);
+  std::ofstream os(file_out_name);
 
-  if (inputFile.is_open() && outputFile.is_open()) {
+  if (is.is_open() && os.is_open()) {
     Scanner scan;
     std::string expression;
     unsigned line_num = 0;
 
-    while (getline(inputFile, expression)) 
+    while (getline(is, expression)) 
       scan.lexer(expression, ++line_num);
     
    
-    scan.print_tokens(outputFile);
+    scan.print_tokens(os);
   
     // Begin syntax analysis
     std::cout << "\n\nBegin Syntax Analysis:\n";
 
     std::vector<Token> t(scan.getTokens());
-    Parser p(t);
+    Parser p(t, os);
     
-    p.parse(outputFile);
+    p.parse(os);
 
-    inputFile.close();
-    outputFile.close();
+    is.close();
+    os.close();
   } else {
     std::cout << "No Input File Found\n";
     exit(1);

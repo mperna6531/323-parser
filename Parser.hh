@@ -11,10 +11,10 @@ class Parser {
 private:
   std::vector<Token> tokens_;
   std::vector<Token>::iterator it_;
-
+  
+  std::ofstream *outfile_;
   static const bool TEST_PRINT = true;
   
-  void dual_print(std::ostream &os, std::string &text) const;
   void print_token() const;
   void next_token();
   bool compare_token_type(const std::string &tkn) const;
@@ -22,6 +22,8 @@ private:
   bool error(const std::string &msg, int line_num) const;
   int get_line_num() const;
   std::string get_lexeme() const;
+  
+  void dual_print(const std::string &rule) const;
 
   bool R18S();  // Rule 1
   bool OFD();  // Rule 2
@@ -63,7 +65,7 @@ private:
   bool PMY_PRIME();  // Rule 28-2
   bool EMP();  // Rule 29:
 public:
-  Parser(std::vector<Token> &tokens);
+  Parser(std::vector<Token> &tokens, std::ofstream &out);
   void parse(std::ostream &os);
 };
 
