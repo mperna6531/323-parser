@@ -5,6 +5,8 @@
 #include "scanner.hh"
 #include "token.hh"
 
+using namespace TOKENS;
+
 Scanner::Scanner() {}
 
 void Scanner::lexer(std::string &expression, int line_num) {
@@ -26,7 +28,7 @@ void Scanner::lexer(std::string &expression, int line_num) {
       }
        // create new Token obj and add to tokens_ vector
       std::string lexeme = machine_.getLexeme();
-      TOKENS::TYPE tknType = machine_.getTokenType();
+      TYPE tknType = machine_.getTokenType();
       Token newToken(tknType, lexeme, line_num);
       tokens_.push_back(newToken);
       
@@ -45,8 +47,8 @@ void Scanner::print_tokens(std::ofstream &out) const {
   out << std::left << std::setw(20)<< "Token" << std::left << std::setw(20) << "Lexeme" << std::endl << std::endl;
 
   for (auto el : tokens_) {
-   std::cout << std::left << std::setw(20) << el.getTokenType() <<
-        std::left << std::setw(20) << el.getLexeme() << std::endl;
+    std::cout << std::left << std::setw(20) << el.getTokenType() <<
+      std::left << std::setw(20) << el.getLexeme() << std::endl;
 
     out << std::left << std::setw(20) << el.getTokenType() <<
       std::left << std::setw(20) << el.getLexeme() << std::endl;  
