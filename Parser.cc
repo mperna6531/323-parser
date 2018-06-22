@@ -65,12 +65,11 @@ void Parser::dual_print(const std::string &rule) const {
   *outfile_ << rule << std::endl;
 }
 
-
 Parser::Parser(std::vector<Token> &tokens, std::ofstream &out) : tokens_(tokens), it_(tokens_.begin()) { 
   outfile_ = &out;
 }
 
-void Parser::parse(std::ostream &os) {
+void Parser::parse() {
   // print starting token
   print_token();
 

@@ -64,9 +64,10 @@ private:
   bool PMY();   // Rule 28
   bool PMY_PRIME();  // Rule 28-2
   bool EMP();  // Rule 29:
+  
 public:
   Parser(std::vector<Token> &tokens, std::ofstream &out);
-  void parse(std::ostream &os);
+  void parse();
 };
 
 #endif

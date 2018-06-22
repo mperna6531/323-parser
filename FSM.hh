@@ -4,7 +4,7 @@
 #include<set>
 #include"token.hh"
 
-using TOKENS::TYPE;
+using namespace TOKENS;
 
 class FSM {
 private:
@@ -43,6 +43,7 @@ const int STATE_TABLE[17][14] =
   bool is_key() const;
   bool push_current() const;
   std::string lexeme_;
+
 public:
   FSM();
   void transition(char input);

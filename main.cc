@@ -1,8 +1,5 @@
 #include <iostream>
-#include <iomanip>
 #include <fstream>
-#include <string>
-#include <cstdlib>
 
 #include "scanner.hh"
 #include "Parser.hh"
@@ -27,17 +24,16 @@ int main(int argc, char **argv) {
     while (getline(is, expression)) 
       scan.lexer(expression, ++line_num);
     
-   
     scan.print_tokens(os);
   
     // Begin syntax analysis
     std::cout << "\n\nBegin Syntax Analysis:\n";
     os << "\n\nBegin Syntax Analysis:\n";
     
-    std::vector<Token> t(scan.getTokens());
-    Parser p(t, os);
+    std::vector<Token> tokens(scan.getTokens());
+    Parser p(tokens, os);
     
-    p.parse(os);
+    p.parse();
 
     is.close();
     os.close();

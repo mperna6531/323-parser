@@ -1,6 +1,8 @@
 #include"token.hh"
 #include"FSM.hh"
 
+using namespace TOKENS;
+
 FSM::FSM() : currentState_(FSM::START), previousState_(FSM::START), lexeme_("")  {}
 
 FSM::INPUT FSM::getInputType(char input) const {
@@ -110,32 +112,32 @@ bool FSM::backup() const {
   }
 }
 
-TOKENS::TYPE FSM::getTokenType() const {
-  if (currentState_ == UNKNOWN) return TOKENS::UNKNOWN;
+TYPE FSM::getTokenType() const {
+  if (currentState_ == UNKNOWN) return TYPE::UNKNOWN;
 
   if (is_accepting()) {
     switch (previousState_) {
       case OP_1A:
       case OP_2A:
       case EQ_A:
-        return TOKENS::OPERATOR;
+        return OPERATOR;
       case ID_L:
-        if (is_key()) return TOKENS::KEYWORD;
-        return TOKENS::IDENTIFIER;
+        if (is_key()) return KEYWORD;
+        return IDENTIFIER;
       case ID_DS:
-        return TOKENS::IDENTIFIER;
+        return IDENTIFIER;
       case INT_ACC:
-        return TOKENS::INTEGER;
+        return INTEGER;
       case REAL_ACC:
-        return TOKENS::REAL;
+        return REAL;
       case SEP_ACC:
-        return TOKENS::SEPARATOR;
+        return TYPE::SEPARATOR;
       default:
         break;
     }
   }
 
-  return TOKENS::UNKNOWN;
+  return TYPE::UNKNOWN;
 }
 
 const std::string FSM::getLexeme() const {
