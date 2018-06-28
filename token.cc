@@ -4,24 +4,26 @@
 #include <iomanip>
 #include "token.hh"
 
-Token::Token(TOKENS::TYPE tt, std::string lexeme, int line_num) : tt_(tt), lexeme_(lexeme), line_num_(line_num) {}
+using namespace TOKENS;
+
+Token::Token(TYPE tt, std::string lexeme, int line_num) : tt_(tt), lexeme_(lexeme), line_num_(line_num) {}
 
 const std::string Token::getTokenType() const {
 
   switch (tt_) {
-    case TOKENS::INTEGER:
+    case INTEGER:
       return "Integer";
-    case TOKENS::IDENTIFIER:
+    case IDENTIFIER:
       return "Identifier";
-    case TOKENS::KEYWORD:
+    case KEYWORD:
       return "Keyword";
-    case TOKENS::OPERATOR:
+    case OPERATOR:
       return "Operator";
-    case TOKENS::REAL:
+    case REAL:
       return "Real";
-    case TOKENS::SEPARATOR:
+    case SEPARATOR:
       return "Separator";
-    case TOKENS::UNKNOWN:
+    case UNKNOWN:
       return "Unknown";
     default:
       return "";

@@ -7,7 +7,7 @@ namespace TOKENS {
   enum TYPE { INTEGER = 0, REAL, IDENTIFIER, KEYWORD, SEPARATOR, OPERATOR, UNKNOWN };
 }
 
-using TOKENS::TYPE;
+using namespace TOKENS;
 
 class Token {
 private:
