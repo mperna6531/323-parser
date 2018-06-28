@@ -9,7 +9,6 @@ using namespace TOKENS;
 Token::Token(TYPE tt, std::string lexeme, int line_num) : tt_(tt), lexeme_(lexeme), line_num_(line_num) {}
 
 const std::string Token::getTokenType() const {
-
   switch (tt_) {
     case INTEGER:
       return "Integer";
